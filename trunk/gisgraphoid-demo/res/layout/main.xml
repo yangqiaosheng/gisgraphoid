@@ -1,46 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/simpleGM_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#111111"
-    android:id="@+id/simpleGM_layout">
-<TextView
-android:id="@+id/simpleGM_tv"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/address"
-android:layout_x="11px"
-android:layout_y="5px"
->
-</TextView>
-<EditText
-android:id="@+id/simpleGM_adress"
-android:layout_width="240px"
-android:layout_height="wrap_content"
-android:hint="@string/input"
-android:textSize="18sp"
-android:layout_x="12px"
-android:layout_y="30px"
->
-</EditText>
-<Button
-android:id="@+id/simpleGM_btn_search"
-android:layout_width="59px"
-android:layout_height="wrap_content"
-android:text="@string/go"
-android:layout_x="256px"
-android:layout_y="30px"
->
-</Button>
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:paddingTop="10px" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/simpleGM_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/address" />
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/simpleGM_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#111111"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <EditText
+        android:id="@+id/simpleGM_adress"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.86"
+        android:layout_x="12px"
+        android:layout_y="30px"
+        android:hint="@string/input"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/simpleGM_btn_search"
+        android:layout_width="59px"
+        android:layout_height="wrap_content"
+        android:layout_x="256px"
+        android:layout_y="30px"
+        android:text="@string/go" />
+</LinearLayout>
 
 <org.osmdroid.views.MapView
 		android:layout_width="fill_parent"
 		android:layout_height="230px"
 		android:id="@+id/osm_map"
 		android:layout_x="2px"
-		android:layout_y="250px">
-	</org.osmdroid.views.MapView>
+		android:layout_y="250px"
+		/>
 <!-- <com.google.android.maps.MapView android:id="@+id/simpleGM_map"
 android:layout_width="fill_parent"
 android:layout_height="110px"
