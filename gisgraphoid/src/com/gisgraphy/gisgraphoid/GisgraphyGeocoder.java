@@ -35,7 +35,8 @@ public class GisgraphyGeocoder {
 	protected static final String GEOCODING_URI = "geocoding/geocode";
 	private String className=GisgraphyGeocoder.class.getSimpleName();
 	private Locale locale;
-	private String url;
+	private Long apiKey; 
+	private String url="http://services.gisgraphy.com/";
 
 	static boolean isPresent() {
 		return true;
@@ -238,6 +239,10 @@ public class GisgraphyGeocoder {
        params.put("country", iso2countryCode);
        params.put("address", locationName);
        params.put("format", FORMAT);
+       if (apiKey!=null){
+    	   params.put("apikey",apiKey+"");
+    	   //TODO test
+       }
  
        //Get JSON response from server the "" are where the method name would normally go if needed example
        // webService.webGet("getMoreAllerts", params);
@@ -265,6 +270,27 @@ public class GisgraphyGeocoder {
 		Address address = new Address(locale);
 		addresses.add(address);
 		return addresses;
+	}
+
+
+	/**
+	 * @return the apikey. apikey is only used for Gisgraphy premium services.
+	 * It is not required for free services (when those lines are written)
+	 * @see http://www.gisgraphy.com/premium
+	 */
+	public Long getApiKey() {
+		return apiKey;
+	}
+
+
+	/**
+	 * @param apiKey the apikey provided by gisgraphy
+	 * apikey is used for Gisgraphy premium services. 
+	 * It is not required for free services (when those lines are written)
+	 * @see http://www.gisgraphy.com/premium
+	 */
+	public void setApiKey(Long apiKey) {
+		this.apiKey = apiKey;
 	}
 
 }

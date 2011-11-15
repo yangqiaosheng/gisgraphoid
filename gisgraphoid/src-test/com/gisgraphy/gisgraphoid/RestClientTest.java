@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.gisgraphy.addressparser.AddressResultsDto;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
@@ -25,18 +26,21 @@ public class RestClientTest {
 	}
 	
 	@Test
-	public void getWithNullURI(){
-		String webServiceUrl = "http://www.perdu.com";
+	public void get(){
+		String webServiceUrl = "http://gisgraphy.free.fr/test-data/";
 		RestClient client = new RestClient(webServiceUrl);
-		Object o = client.get(null, Object.class, new HashMap<String, String>());
-		System.out.println(o);
+		AddressResultsDto o = client.get("champs_elysees_paris", AddressResultsDto.class, new HashMap<String, String>());
+		Assert.assertNotNull(o.getResult());
+		Assert.assertEquals(10, o.getResult().size());
 	}
 	
-	@Test
-	public void getWithNullUrl(){
-		String webServiceUrl = "http://www.perdu.com";
+	@Test(expected=RuntimeException.class)
+	public void getBadUrl(){
+		String webServiceUrl = "http://gisgraphy";
 		RestClient client = new RestClient(webServiceUrl);
-		client.get(null, Object.class, new HashMap<String, String>());
+		client.get("champs_elysees_paris", AddressResultsDto.class, new HashMap<String, String>());
 	}
+	
+
 
 }
