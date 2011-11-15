@@ -2,8 +2,9 @@
 <resources>
 
     <string name="app_name">Gisgraphoid sample</string>
-    <string name="go">Go</string>
-    <string name="address">Enter your address:</string>
+    <string name="title">Gisgraphoid</string>
+    <string name="go">Geocode</string>
+    <string name="address">Enter your address :</string>
     <string name="input">City, Street</string>
     <string name="ok">Ok</string>
 
