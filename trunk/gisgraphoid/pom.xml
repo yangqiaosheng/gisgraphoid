@@ -129,7 +129,7 @@
 					<!-- <nativeLibrariesDirectory>${project.basedir}/lib</nativeLibrariesDirectory>-->
 					<sdk>
 						<!-- platform or api level (api level 4 = platform 1.6) -->
-						<path>/home/dmasclet/workspace_perso/android-sdks/</path>
+						<!-- <path>/home/dmasclet/workspace_perso/android-sdks/</path>-->
 						<platform>7</platform>
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
