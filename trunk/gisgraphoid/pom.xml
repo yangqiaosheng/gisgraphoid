@@ -57,6 +57,12 @@
 			<artifactId>gisgraphy-commons</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
+			<exclusions>
+			<exclusion>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -97,6 +103,19 @@
 	<build>
 		<defaultGoal>package</defaultGoal>
 		<plugins>
+		 <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.2</version>
+         <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+        </execution>
+         </executions>
+      </plugin>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>maven-android-plugin</artifactId>
@@ -110,7 +129,7 @@
 					<!-- <nativeLibrariesDirectory>${project.basedir}/lib</nativeLibrariesDirectory>-->
 					<sdk>
 						<!-- platform or api level (api level 4 = platform 1.6) -->
-						<path>/home/gisgraphy/workspace/androids-sdk/</path>
+						<path>/home/dmasclet/workspace_perso/android-sdks/</path>
 						<platform>7</platform>
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
