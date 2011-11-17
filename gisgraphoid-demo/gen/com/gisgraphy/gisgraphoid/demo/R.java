@@ -16,7 +16,8 @@ public final class R {
     public static final class id {
         public static final int imageView1=0x7f050002;
         public static final int linearLayout1=0x7f050001;
-        public static final int osm_map=0x7f050007;
+        public static final int list=0x7f050007;
+        public static final int osm_map=0x7f050008;
         public static final int simpleGM_adress=0x7f050005;
         public static final int simpleGM_btn_search=0x7f050006;
         public static final int simpleGM_layout=0x7f050000;
@@ -25,12 +26,15 @@ public final class R {
     }
     public static final class layout {
         public static final int main=0x7f030000;
+        public static final int map=0x7f030001;
     }
     public static final class string {
         public static final int address=0x7f040003;
         public static final int app_name=0x7f040000;
         public static final int go=0x7f040002;
         public static final int input=0x7f040004;
+        public static final int latitude=0x7f040006;
+        public static final int longitude=0x7f040007;
         public static final int ok=0x7f040005;
         public static final int title=0x7f040001;
     }

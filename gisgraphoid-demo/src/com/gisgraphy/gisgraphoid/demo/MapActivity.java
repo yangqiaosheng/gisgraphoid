@@ -24,7 +24,7 @@ import android.widget.TwoLineListItem;
 
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 
-public class GisgraphoidDemoActivity extends Activity {
+public class MapActivity extends Activity {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
@@ -65,7 +65,7 @@ public class GisgraphoidDemoActivity extends Activity {
 					if (foundAdresses.size() == 0) { // if no address found,
 						// display an error
 						Dialog locationError = new AlertDialog.Builder(
-								GisgraphoidDemoActivity.this).setIcon(0).setTitle(
+								MapActivity.this).setIcon(0).setTitle(
 								"Error").setPositiveButton(R.string.ok, null)
 								.setMessage(
 										"Sorry, your address doesn't exist.")
@@ -133,7 +133,7 @@ public class GisgraphoidDemoActivity extends Activity {
 	
 	private void viewOnMap(Address address) {
 		 Intent next = new Intent();
-	        next.setClass(this, GisgraphoidDemoActivity.class);
+	        next.setClass(this, MapActivity.class);
 	        next.putExtra("featureName", address.getFeatureName());
 	        next.putExtra("latitude", address.getLatitude());
 	        next.putExtra("longitude", address.getLongitude());
@@ -153,7 +153,7 @@ public class GisgraphoidDemoActivity extends Activity {
 			} else {
 				this.addresses = addresses;
 			}
-			mInflater = (LayoutInflater) GisgraphoidDemoActivity.this.getSystemService(
+			mInflater = (LayoutInflater) MapActivity.this.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
 		}
 

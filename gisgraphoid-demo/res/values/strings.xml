@@ -7,5 +7,7 @@
     <string name="address">Enter your address :</string>
     <string name="input">City, Street</string>
     <string name="ok">Ok</string>
+    <string name="latitude">Lat</string>
+    <string name="longitude">Long</string>
 
 </resources>

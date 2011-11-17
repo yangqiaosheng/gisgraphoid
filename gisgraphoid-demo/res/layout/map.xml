@@ -27,44 +27,7 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/simpleGM_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/address" />
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/simpleGM_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="#111111"
-    android:baselineAligned="false"
-    android:orientation="horizontal" >
-
-    <EditText
-        android:id="@+id/simpleGM_adress"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.86"
-        android:layout_x="12px"
-        android:layout_y="30px"
-        android:hint="@string/input"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/simpleGM_btn_search"
-        android:layout_width="59px"
-        android:layout_height="wrap_content"
-        android:layout_x="256px"
-        android:layout_y="30px"
-        android:text="@string/go" />
-</LinearLayout>
- <ListView
-            android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_weight="1"/>
+    
 <org.osmdroid.views.MapView
 		android:layout_width="fill_parent"
 		android:layout_height="230px"
