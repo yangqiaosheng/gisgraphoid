@@ -1,6 +1,8 @@
 package com.gisgraphy.gisgraphoid;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,12 +33,13 @@ import com.gisgraphy.addressparser.AddressResultsDto;
  */
 public class GisgraphyGeocoder {
 
+	public static final String DEFAULT_BASE_URL = "http://services.gisgraphy.com/";
 	protected static final String FORMAT = "json";
 	protected static final String GEOCODING_URI = "geocoding/geocode";
 	private String className=GisgraphyGeocoder.class.getSimpleName();
 	private Locale locale;
 	private Long apiKey; 
-	private String url="http://services.gisgraphy.com/";
+	private String url=DEFAULT_BASE_URL;
 
 	static boolean isPresent() {
 		return true;
@@ -44,22 +47,27 @@ public class GisgraphyGeocoder {
 
 	
 	/**
-	 * @param url the base Url. it must follow the SCHEME://HOST[:PORT]/
-	 * Don't add the URI.
-	 * Good base URL : http://services.gisgraphy.com/
+	 * @param url the Gisgraphy base URL. It must follow the SCHEME://HOST[:PORT][/CONTEXT]/
+	 * Don't add the URI.<br/>
+	 * Good base URL : http://services.gisgraphy.com/<br/>
 	 * Bad base URL : http://services.gisgraphy.com/geocoding/geocode
 	 */
 	public void setBaseUrl(String url){
 		if (url==null){
 			throw new IllegalArgumentException(className+" does not accept null URL");
 		}
-		//TODO check format
+		try {
+		    new URL(url);
+		} catch (MalformedURLException e) {
+		    throw new IllegalArgumentException(url+" is no a valid Url : "+e.getMessage(),e);
+		}
 		this.url = url;
 	}
 	/**
 	 * Constructs a Geocoder whose responses will be localized for the given
 	 * Locale. You should prefer the {@link #GisgraphyGeocoder(Context, Locale, String)} constructor.
 	 * This method is only to suite the android geocoder interface
+	 * the Gisgraphy base URL will be the {@link #DEFAULT_BASE_URL}
 	 * 
 	 * @param context
 	 *            the Context of the calling Activity
@@ -70,7 +78,7 @@ public class GisgraphyGeocoder {
 	 */
 	public GisgraphyGeocoder(Context context, Locale locale) {
 		if (locale == null) {
-			throw new NullPointerException(className+ " does not accept null locale");
+			throw new IllegalArgumentException(className+ " does not accept null locale");
 		}
 		this.locale = locale;
 	}
@@ -83,10 +91,11 @@ public class GisgraphyGeocoder {
 	 * @param locale
 	 *            the desired Locale for the query results
 	 * @param url the base url (scheme,host,port). see {@link #setBaseUrl(String)}
+	 * @see GisgraphyGeocoder#setBaseUrl(String)
 	 */
 	public GisgraphyGeocoder(Context context, Locale locale,String url) {
 		if (locale == null) {
-			throw new NullPointerException(className+ " does not accept null locale");
+			throw new IllegalArgumentException(className+ " does not accept null locale");
 		}
 		setBaseUrl(url);
 		this.locale = locale;
@@ -118,10 +127,8 @@ public class GisgraphyGeocoder {
 	}
 
 	/**
-	 * Returns an array of Addresses that are known to describe the area
-	 * immediately surrounding the given latitude and longitude. The returned
-	 * addresses will be localized for the locale provided to this class's
-	 * constructor.
+	 * Returns a list of Addresses that are known to describe the area
+	 * immediately surrounding the given latitude and longitude.
 	 * 
 	 * The returned values may be obtained by means of a network lookup. The
 	 * results are a best guess and are not guaranteed to be meaningful or
@@ -154,7 +161,7 @@ public class GisgraphyGeocoder {
 
 
 	/**
-	 * Returns an array of Addresses that are known to describe the named
+	 * Returns a List of Addresses that are known to describe the named
 	 * location, which may be a place name such as "Dalvik, Iceland", an address
 	 * such as "1600 Amphitheatre Parkway, Mountain View, CA", an airport code
 	 * such as "SFO", etc.. The returned addresses will be localized for the
@@ -291,6 +298,26 @@ public class GisgraphyGeocoder {
 	 */
 	public void setApiKey(Long apiKey) {
 		this.apiKey = apiKey;
+	}
+
+
+	public String getUrl() {
+	    return url;
+	}
+
+
+	public void setUrl(String url) {
+	    this.url = url;
+	}
+
+
+	public Locale getLocale() {
+	    return locale;
+	}
+
+
+	public void setLocale(Locale locale) {
+	    this.locale = locale;
 	}
 
 }
