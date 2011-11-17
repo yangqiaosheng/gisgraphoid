@@ -68,6 +68,7 @@ public class GisgraphoidDemoActivity extends Activity {
 								GisgraphoidDemoActivity.this).setIcon(0).setTitle(
 								"Error").setPositiveButton(R.string.ok, null)
 								.setMessage(
+										//TODO l10n
 										"Sorry, your address doesn't exist.")
 								.create();
 						locationError.show();
