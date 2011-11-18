@@ -238,7 +238,6 @@ public class GisgraphyGeocoder {
  
        //Pass the parameters if needed , if not then pass dummy one as follows
        Map<String, String> params = new HashMap<String, String>();
-       locationName = "rue jean jaures bailleul";
        String iso3countryCode =  locale.getCountry();
        String iso2countryCode = getiso2countryCodeFromiso3countryCode(iso3countryCode);
        Log.d(className,"country='"+locationName+"'");
