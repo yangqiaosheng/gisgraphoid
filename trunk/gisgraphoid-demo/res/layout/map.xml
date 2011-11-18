@@ -30,7 +30,7 @@
     
 <org.osmdroid.views.MapView
 		android:layout_width="fill_parent"
-		android:layout_height="230px"
+		android:layout_height="fill_parent"
 		android:id="@+id/osm_map"
 		android:layout_x="2px"
 		android:layout_y="250px"

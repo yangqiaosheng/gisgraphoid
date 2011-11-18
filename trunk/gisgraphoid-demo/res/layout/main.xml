@@ -61,22 +61,9 @@
         android:text="@string/go" />
 </LinearLayout>
  <ListView
-            android:id="@+id/list"
+            android:id="@+id/results"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"/>
-<org.osmdroid.views.MapView
-		android:layout_width="fill_parent"
-		android:layout_height="230px"
-		android:id="@+id/osm_map"
-		android:layout_x="2px"
-		android:layout_y="250px"
-		/>
-<!-- <com.google.android.maps.MapView android:id="@+id/simpleGM_map"
-android:layout_width="fill_parent"
-android:layout_height="110px"
-android:apiKey="096dBlObdVZpvR7dVC3bIxIJCc2NZ77ymiTd2Lw"
-android:layout_x="2px"
-android:layout_y="100px"
-android:clickable="true" />-->
+
 </LinearLayout>
