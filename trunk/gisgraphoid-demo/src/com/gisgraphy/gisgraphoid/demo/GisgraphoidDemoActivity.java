@@ -1,9 +1,10 @@
 package com.gisgraphy.gisgraphoid.demo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import javax.management.RuntimeErrorException;
+import java.util.Locale;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,12 +19,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
+import com.gisgraphy.gisgraphoid.CountriesData;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
 
@@ -34,7 +39,8 @@ public class GisgraphoidDemoActivity extends Activity {
 
     // private MapView googleMap;
     private Button btnSearch;
-    private EditText adress;
+    private EditText address;
+    private TextView localetextview;
     private ListView mList;
     private GisgraphyGeocoder gisgraphyGeocoder;
     private double lat;
@@ -45,21 +51,26 @@ public class GisgraphoidDemoActivity extends Activity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.main);
 
-	// osmMap =(org.osmdroid.views.MapView) findViewById(R.id.osm_map);
-	// googleMap = (MapView) findViewById(R.id.simpleGM_map); // Get map
-	// from XML
-	btnSearch = (Button) findViewById(R.id.simpleGM_btn_search); // Get
-								     // button
-								     // from xml
-	adress = (EditText) findViewById(R.id.simpleGM_adress); // Get address
-								// from XML
+	btnSearch = (Button) findViewById(R.id.simpleGM_btn_search); 
+	address = (EditText) findViewById(R.id.simpleGM_adress); 
 	mList = (ListView) findViewById(R.id.results);
+	Spinner spinner  = (Spinner) findViewById(R.id.spinnerlocale);
+	String defaultcountry = Locale.getDefault().getCountry();
+	Set<String> countryname = CountriesData.countries.keySet();
+	 ArrayAdapter<String> adapter_time = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,countryname.toArray(new String[countryname.size()]));
+	 spinner.setAdapter(adapter_time);
+
+	 ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+	            this, R.array.planets_array, android.R.layout.simple_spinner_item);
+
+	 //adapter_time.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+	    spinner.setAdapter(adapter_time);
 
 	gisgraphyGeocoder = createGeocoder(); // create new geocoder instance
 
 	btnSearch.setOnClickListener(new OnClickListener() {
 	    public void onClick(View v) {
-		String addressInput = adress.getText().toString(); // Get input
+		String addressInput = address.getText().toString(); // Get input
 								   // text
 		gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
 		try {
@@ -97,17 +108,7 @@ public class GisgraphoidDemoActivity extends Activity {
 	});
     }
 
-    /*
-     * public void navigateToGoogleMap(double latitude, double longitude,
-     * MapView mv) { GeoPoint p = new GeoPoint((int) latitude, (int) longitude);
-     * // new // GeoPoint mv.displayZoomControls(true); // display Zoom (seems
-     * that it doesn't // work yet) MapController mc = mv.getController();
-     * mc.animateTo(p); // move map to the given point int zoomlevel =
-     * mv.getMaxZoomLevel(); // detect maximum zoom level mc.setZoom(zoomlevel -
-     * 1); // zoom mv.setSatellite(false); // display only "normal" mapview
-     * 
-     * }
-     */
+  
 
     private GisgraphyGeocoder createGeocoder() {
 	// return new GisgraphyGeocoder(this);
