@@ -28,46 +28,47 @@ import com.gisgraphy.addressparser.AddressResultsDto;
  * return an empty list if there no backend service in the platform. Use the
  * isPresent() method to determine whether a Geocoder implementation exists.
  * 
- * usage :
- * TODO
+ * usage : TODO
  */
 public class GisgraphyGeocoder {
 
 	public static final String DEFAULT_BASE_URL = "http://services.gisgraphy.com/";
 	protected static final String FORMAT = "json";
 	protected static final String GEOCODING_URI = "geocoding/geocode";
-	private String className=GisgraphyGeocoder.class.getSimpleName();
+	private static String LOG_TAG = GisgraphyGeocoder.class.getSimpleName();
 	private Locale locale;
-	private Long apiKey; 
-	private String url=DEFAULT_BASE_URL;
+	private Long apiKey;
+	private String url = DEFAULT_BASE_URL;
 
 	static boolean isPresent() {
 		return true;
 	}
 
-	
 	/**
-	 * @param url the Gisgraphy base URL. It must follow the SCHEME://HOST[:PORT][/CONTEXT]/
-	 * Don't add the URI.<br/>
-	 * Good base URL : http://services.gisgraphy.com/<br/>
-	 * Bad base URL : http://services.gisgraphy.com/geocoding/geocode
+	 * @param url
+	 *            the Gisgraphy base URL. It must follow the
+	 *            SCHEME://HOST[:PORT][/CONTEXT]/ Don't add the URI.<br/>
+	 *            Good base URL : http://services.gisgraphy.com/<br/>
+	 *            Bad base URL : http://services.gisgraphy.com/geocoding/geocode
 	 */
-	public void setBaseUrl(String url){
-		if (url==null){
-			throw new IllegalArgumentException(className+" does not accept null URL");
+	public void setBaseUrl(String url) {
+		if (url == null) {
+			throw new IllegalArgumentException(LOG_TAG + " does not accept null URL");
 		}
 		try {
-		    new URL(url);
+			new URL(url);
 		} catch (MalformedURLException e) {
-		    throw new IllegalArgumentException(url+" is no a valid Url : "+e.getMessage(),e);
+			throw new IllegalArgumentException(url + " is no a valid Url : " + e.getMessage(), e);
 		}
 		this.url = url;
 	}
+
 	/**
 	 * Constructs a Geocoder whose responses will be localized for the given
-	 * Locale. You should prefer the {@link #GisgraphyGeocoder(Context, Locale, String)} constructor.
-	 * This method is only to suite the android geocoder interface
-	 * the Gisgraphy base URL will be the {@link #DEFAULT_BASE_URL}
+	 * Locale. You should prefer the
+	 * {@link #GisgraphyGeocoder(Context, Locale, String)} constructor. This
+	 * method is only to suite the android geocoder interface the Gisgraphy base
+	 * URL will be the {@link #DEFAULT_BASE_URL}
 	 * 
 	 * @param context
 	 *            the Context of the calling Activity
@@ -78,33 +79,37 @@ public class GisgraphyGeocoder {
 	 */
 	public GisgraphyGeocoder(Context context, Locale locale) {
 		if (locale == null) {
-			throw new IllegalArgumentException(className+ " does not accept null locale");
+			throw new IllegalArgumentException(LOG_TAG + " does not accept null locale");
 		}
 		this.locale = locale;
 	}
-	
+
 	/**
 	 * Constructs a Geocoder whose responses will be localized for the given
 	 * Locale and URL
-	 *  @param context
+	 * 
+	 * @param context
 	 *            the Context of the calling Activity
 	 * @param locale
 	 *            the desired Locale for the query results
-	 * @param url the base url (scheme,host,port). see {@link #setBaseUrl(String)}
+	 * @param url
+	 *            the base url (scheme,host,port). see
+	 *            {@link #setBaseUrl(String)}
 	 * @see GisgraphyGeocoder#setBaseUrl(String)
 	 */
-	public GisgraphyGeocoder(Context context, Locale locale,String url) {
+	public GisgraphyGeocoder(Context context, Locale locale, String url) {
 		if (locale == null) {
-			throw new IllegalArgumentException(className+ " does not accept null locale");
+			throw new IllegalArgumentException(LOG_TAG + " does not accept null locale");
 		}
 		setBaseUrl(url);
 		this.locale = locale;
 	}
 
 	/**
-	 * Constructs a Gisgraphy Geocoder whose responses will be localized for the default
-	 * system Locale. You should prefer the {@link #GisgraphyGeocoder(Context, String)} constructor.
-	 * This method is only here to suite the android geocoder interface
+	 * Constructs a Gisgraphy Geocoder whose responses will be localized for the
+	 * default system Locale. You should prefer the
+	 * {@link #GisgraphyGeocoder(Context, String)} constructor. This method is
+	 * only here to suite the android geocoder interface
 	 * 
 	 * @param context
 	 *            the desired Locale for the query results
@@ -112,14 +117,16 @@ public class GisgraphyGeocoder {
 	public GisgraphyGeocoder(Context context) {
 		this.locale = Locale.getDefault();
 	}
-	
+
 	/**
 	 * Constructs a Geocoder whose responses will be localized for the default
 	 * system Locale.
 	 * 
 	 * @param context
 	 *            the desired Locale for the query results
-	 * @param url the base url (scheme,host,port). see {@link #setBaseUrl(String)}
+	 * @param url
+	 *            the base url (scheme,host,port). see
+	 *            {@link #setBaseUrl(String)}
 	 */
 	public GisgraphyGeocoder(Context context, String url) {
 		this.locale = Locale.getDefault();
@@ -142,8 +149,8 @@ public class GisgraphyGeocoder {
 	 * @param maxResults
 	 *            max number of addresses to return. Smaller numbers (1 to 5)
 	 *            are recommended
-	 * @return a list of Address objects. Returns empty list if no
-	 *         matches were found or there is no backend service available.
+	 * @return a list of Address objects. Returns empty list if no matches were
+	 *         found or there is no backend service available.
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if latitude is less than -90 or greater than 90
@@ -155,10 +162,6 @@ public class GisgraphyGeocoder {
 	public List<Address> getFromLocation(double latitude, double longitude, int maxResults) throws IOException {
 		return null;
 	}
-
-
-	
-
 
 	/**
 	 * Returns a List of Addresses that are known to describe the named
@@ -200,9 +203,9 @@ public class GisgraphyGeocoder {
 	 * @throws IOException
 	 *             if the network is unavailable or any other I/O problem occurs
 	 */
-	public List<Address> getFromLocationName(String locationName, int maxResults, double lowerLeftLatitude, double lowerLeftLongitude, double upperRightLatitude, double upperRightLongitude) throws IOException{
+	public List<Address> getFromLocationName(String locationName, int maxResults, double lowerLeftLatitude, double lowerLeftLongitude, double upperRightLatitude, double upperRightLongitude) throws IOException {
 		return getFromLocationName(locationName, maxResults);
-		//TODO extract radius
+		// TODO extract radius
 	}
 
 	/**
@@ -234,40 +237,40 @@ public class GisgraphyGeocoder {
 	public List<Address> getFromLocationName(String locationName, int maxResults) throws IOException {
 		checkUrl();
 		List<Address> androidAddress = new ArrayList<Address>();
-       RestClient webService = new RestClient(url);
- 
-       //Pass the parameters if needed , if not then pass dummy one as follows
-       Map<String, String> params = new HashMap<String, String>();
-       String iso3countryCode =  locale.getCountry();
-       String iso2countryCode = getiso2countryCodeFromiso3countryCode(iso3countryCode);
-       Log.d(className,"country='"+locationName+"'");
-       Log.d(className,"country='"+iso2countryCode+"'");
-       params.put("country", iso2countryCode);
-       params.put("address", locationName);
-       params.put("format", FORMAT);
-       if (apiKey!=null){
-    	   params.put("apikey",apiKey+"");
-    	   //TODO test
-       }
- 
-       //Get JSON response from server the "" are where the method name would normally go if needed example
-       // webService.webGet("getMoreAllerts", params);
-       AddressResultsDto response = webService.get(GEOCODING_URI,AddressResultsDto.class, params);
-       if (response!=null && response.getResult()!=null && response.getResult().size()>0 ){
-    	   androidAddress = transformGisgraphyAdressToAndroidAddress(response.getResult());
-       }
-		return androidAddress;
-		
-	}
+		RestClient webService = new RestClient(url);
 
+		// Pass the parameters if needed , if not then pass dummy one as follows
+		Map<String, String> params = new HashMap<String, String>();
+		String iso3countryCode = locale.getCountry();
+		String iso2countryCode = getiso2countryCodeFromiso3countryCode(iso3countryCode);
+		Log.d(LOG_TAG, "country='" + locationName + "'");
+		Log.d(LOG_TAG, "country='" + iso2countryCode + "'");
+		params.put("country", iso2countryCode);
+		params.put("address", locationName);
+		params.put("format", FORMAT);
+		if (apiKey != null) {
+			params.put("apikey", apiKey + "");
+			// TODO test
+		}
+
+		// Get JSON response from server the "" are where the method name would
+		// normally go if needed example
+		// webService.webGet("getMoreAllerts", params);
+		AddressResultsDto response = webService.get(GEOCODING_URI, AddressResultsDto.class, params);
+		if (response != null && response.getResult() != null && response.getResult().size() > 0) {
+			androidAddress = transformGisgraphyAdressToAndroidAddress(response.getResult());
+		}
+		return androidAddress;
+
+	}
 
 	private String getiso2countryCodeFromiso3countryCode(String iso3countryCode) {
 		return iso3countryCode.substring(0, 2);
 	}
-	
+
 	private void checkUrl() throws IOException {
-		if (url==null){
-			throw new IOException(this.getClass().getSimpleName()+" is not initialize, please call setUrl before calling geocoding methods");
+		if (url == null) {
+			throw new IOException(this.getClass().getSimpleName() + " is not initialize, please call setUrl before calling geocoding methods");
 		}
 	}
 
@@ -278,45 +281,41 @@ public class GisgraphyGeocoder {
 		return addresses;
 	}
 
-
 	/**
 	 * @return the apikey. apikey is only used for Gisgraphy premium services.
-	 * It is not required for free services (when those lines are written)
+	 *         It is not required for free services (when those lines are
+	 *         written)
 	 * @see http://www.gisgraphy.com/premium
 	 */
 	public Long getApiKey() {
 		return apiKey;
 	}
 
-
 	/**
-	 * @param apiKey the apikey provided by gisgraphy
-	 * apikey is used for Gisgraphy premium services. 
-	 * It is not required for free services (when those lines are written)
+	 * @param apiKey
+	 *            the apikey provided by gisgraphy apikey is used for Gisgraphy
+	 *            premium services. It is not required for free services (when
+	 *            those lines are written)
 	 * @see http://www.gisgraphy.com/premium
 	 */
 	public void setApiKey(Long apiKey) {
 		this.apiKey = apiKey;
 	}
 
-
 	public String getUrl() {
-	    return url;
+		return url;
 	}
-
 
 	public void setUrl(String url) {
-	    this.url = url;
+		this.url = url;
 	}
-
 
 	public Locale getLocale() {
-	    return locale;
+		return locale;
 	}
 
-
 	public void setLocale(Locale locale) {
-	    this.locale = locale;
+		this.locale = locale;
 	}
 
 }
