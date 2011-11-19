@@ -1,6 +1,7 @@
 package com.gisgraphy.gisgraphoid.demo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,8 +44,11 @@ public class GisgraphoidDemoActivity extends Activity {
 	protected ListView mList;
 	protected Spinner spinner;
 	protected GisgraphyGeocoder gisgraphyGeocoder;
+	protected static List<String> SORTED_COUNTRY_LIST=CountriesData.sortedCountriesName;
 	protected static String[] SORTED_COUNTRY_ARRAY = CountriesData.sortedCountriesName.toArray(
-			new String[CountriesData.sortedCountriesName.size()]);
+	new String[CountriesData.sortedCountriesName.size()]);
+
+	{Collections.sort(SORTED_COUNTRY_LIST);}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,14 @@ public class GisgraphoidDemoActivity extends Activity {
 		btnSearch = (Button) findViewById(R.id.simpleGM_btn_search);
 		btnSearch.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				String addressInput = address.getText().toString();
+				if (addressInput==null || addressInput.trim().equals("")){
+					Dialog emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(
+							getResources().getString(R.string.empty_input)).create();
+					emptyAddressInputDialog.show();
+					return;
+				}
+
 				int spinnerItemPosition = spinner.getSelectedItemPosition();
 				Log.i(LOG_TAG, "spinner item position = "+spinnerItemPosition);
 				String countryCode = CountriesData.getCountryCodeFromPosition(spinnerItemPosition);
@@ -75,7 +87,6 @@ public class GisgraphoidDemoActivity extends Activity {
 				
 				gisgraphyGeocoder = createGeocoder(locale); // create new geocoder
 														// instance
-				String addressInput = address.getText().toString();
 				// gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
 				try {
 					gisgraphyGeocoder.getFromLocationName(addressInput, 1);
@@ -85,7 +96,7 @@ public class GisgraphoidDemoActivity extends Activity {
 					if (foundAdresses.size() == 0) { 
 						// if no address found, display an error
 						Log.i(LOG_TAG,"no result found for "+addressInput);
-						Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle("Error").setPositiveButton(R.string.ok, null).setMessage(
+						Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(
 								getResources().getString(R.string.no_result)).create();
 						locationError.show();
 					} else { 
