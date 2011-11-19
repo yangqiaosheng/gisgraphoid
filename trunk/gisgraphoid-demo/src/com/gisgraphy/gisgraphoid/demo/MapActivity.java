@@ -3,7 +3,7 @@ package com.gisgraphy.gisgraphoid.demo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 public class MapActivity extends Activity {
 	protected boolean isRouteDisplayed() {
@@ -15,6 +15,7 @@ public class MapActivity extends Activity {
 	private double lat;
 	private double lon;
 	private String name;
+	private static String LOG_TAG="Gisgraphoid-demo-map";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,14 @@ public class MapActivity extends Activity {
 		Intent intent = getIntent();
 		lat = intent.getDoubleExtra(ExtraInfos.LATITUDE,0);
 		lon = intent.getDoubleExtra(ExtraInfos.LONGITUDE,0);
-		
 		name=intent.getStringExtra(ExtraInfos.FEATURE_NAME);
+		
+		Log.i(LOG_TAG, "lat="+lat);
+		Log.i(LOG_TAG, "lon="+lon);
+		Log.i(LOG_TAG, "name="+name);
+		
+		
+		
 		osmMap =(org.osmdroid.views.MapView) findViewById(R.id.osm_map);
 		osmMap.setBuiltInZoomControls(true);
 		osmMap.setMultiTouchControls(true);
@@ -36,15 +43,13 @@ public class MapActivity extends Activity {
 
 	/*public void navigateToGoogleMap(double latitude, double longitude,
 			MapView mv) {
-		GeoPoint p = new GeoPoint((int) latitude, (int) longitude); // new
-		// GeoPoint
-		mv.displayZoomControls(true); // display Zoom (seems that it doesn't
-		// work yet)
+		GeoPoint p = new GeoPoint((int) latitude, (int) longitude); 
+		mv.displayZoomControls(true); 
 		MapController mc = mv.getController();
-		mc.animateTo(p); // move map to the given point
-		int zoomlevel = mv.getMaxZoomLevel(); // detect maximum zoom level
-		mc.setZoom(zoomlevel - 1); // zoom
-		mv.setSatellite(false); // display only "normal" mapview
+		mc.setCenter(p); 
+		int zoomlevel = mv.getMaxZoomLevel(); 
+		mc.setZoom(zoomlevel - 1); 
+		mv.setSatellite(false); 
 
 	}*/
 	
@@ -58,16 +63,10 @@ public class MapActivity extends Activity {
 	 */
 	public void navigateToOsmMAP(double latitude, double longitude,String name,
 			org.osmdroid.views.MapView mv) {
-		org.osmdroid.util.GeoPoint p = new org.osmdroid.util.GeoPoint((int) latitude, (int) longitude); // new
-		// GeoPoint
+		org.osmdroid.util.GeoPoint p = new org.osmdroid.util.GeoPoint((int) latitude, (int) longitude); 
 		org.osmdroid.views.MapController mc = mv.getController();
-		//mv.getMaxZoomLevel();
-		//mc.setZoom(mv.getMaxZoomLevel() -1);
-		//mc.animateTo(p); // move map to the given point
-		//int zoomlevel = mv.getMaxZoomLevel(); // detect maximum zoom level
-		mc.setZoom(14); // zoom
+		mc.setZoom(14); 
 		mc.setCenter(p);
-		//mv.setSatellite(false); // display only "normal" mapview
 	}
 	
 	

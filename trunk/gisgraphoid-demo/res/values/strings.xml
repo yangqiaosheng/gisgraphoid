@@ -4,22 +4,14 @@
     <string name="app_name">Gisgraphoid sample</string>
     <string name="title">Gisgraphoid</string>
     <string name="go">Geocode</string>
-    <string name="address">Enter an address and choose your country :</string>
+    <string name="address">Select a country and enter an address :</string>
+    <string name="choosecountry">Select a country</string>
     <string name="input">Adress, City, Street</string>
     <string name="ok">Ok</string>
     <string name="latitude">Lat</string>
     <string name="longitude">Long</string>
-      <string name="choosecountry">Select your country</string>
-<string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+    <string name="name">name</string>
+    <string name="no_result">Sorry, no Address found</string>
           
 
 </resources>
