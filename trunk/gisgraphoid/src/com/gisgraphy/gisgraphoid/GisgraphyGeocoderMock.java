@@ -1,19 +1,12 @@
 package com.gisgraphy.gisgraphoid;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import android.content.Context;
 import android.location.Address;
-import android.util.Log;
-
-import com.gisgraphy.addressparser.AddressResultsDto;
 
 /**
  * a simple mock that returns some addresses
