@@ -40,6 +40,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+		<groupId>org.easymock</groupId>
+		<artifactId>easymock</artifactId>
+		<version>3.0</version>
+		<scope>test</scope>
+	   </dependency>
+		<dependency>
 			<groupId>com.pivotallabs</groupId>
 			<artifactId>robolectric</artifactId>
 			<version>0.9.8</version>

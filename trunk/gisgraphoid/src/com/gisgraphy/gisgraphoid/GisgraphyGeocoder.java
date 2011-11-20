@@ -32,14 +32,50 @@ import com.gisgraphy.addressparser.AddressResultsDto;
  */
 public class GisgraphyGeocoder {
 
-	public static final String DEFAULT_BASE_URL = "http://services.gisgraphy.com/";
-	protected static final String FORMAT = "json";
-	protected static final String GEOCODING_URI = "geocoding/geocode";
-	private static String LOG_TAG = GisgraphyGeocoder.class.getSimpleName();
-	private Locale locale;
-	private Long apiKey;
-	private String url = DEFAULT_BASE_URL;
 
+	
+
+	private static String LOG_TAG = GisgraphyGeocoder.class.getSimpleName();
+	/**
+	 * the api key parameter name. <br/>
+	 * This parameter is only required for Gisgraphy premium services
+	 * 
+	 * @see #getApiKey();
+	 * @see #setApiKey(Long)
+	 */
+
+	protected static final String APIKEY_PARAMETER_NAME = "apikey";
+	protected static String ADDRESS_PARAMETER_NAME = "address";
+	protected static String COUNTRY_PARAMETER_NAME = "country";
+	protected static String FORMAT_PARAMETER_NAME = "format";
+	/**
+	 * the default base url of gisgraphy services.
+	 */
+	public static final String DEFAULT_BASE_URL = "http://services.gisgraphy.com/";
+	/**
+	 * the format of the geocoding services.
+	 */
+	protected static final String DEFAULT_FORMAT = "json";
+	/**
+	 * the URI to the geocoding services.
+	 * 
+	 * @see GisgraphyGeocoder#DEFAULT_BASE_URL;
+	 */
+	protected static final String GEOCODING_URI = "geocoding/geocode";
+	private Locale locale = Locale.getDefault();
+	private Long apiKey;
+	private String baseUrl = DEFAULT_BASE_URL;
+
+	
+	/**
+	 * this method purpose is only to mock the call to android logger during
+	 * tests. but feel free to override
+	 * 
+	 */
+	protected void log_d( String message) {
+		Log.d(LOG_TAG, message);
+		
+	}
 	static boolean isPresent() {
 		return true;
 	}
@@ -60,7 +96,7 @@ public class GisgraphyGeocoder {
 		} catch (MalformedURLException e) {
 			throw new IllegalArgumentException(url + " is no a valid Url : " + e.getMessage(), e);
 		}
-		this.url = url;
+		this.baseUrl = url;
 	}
 
 	/**
@@ -115,7 +151,6 @@ public class GisgraphyGeocoder {
 	 *            the desired Locale for the query results
 	 */
 	public GisgraphyGeocoder(Context context) {
-		this.locale = Locale.getDefault();
 	}
 
 	/**
@@ -237,19 +272,18 @@ public class GisgraphyGeocoder {
 	public List<Address> getFromLocationName(String locationName, int maxResults) throws IOException {
 		checkUrl();
 		List<Address> androidAddress = new ArrayList<Address>();
-		RestClient webService = new RestClient(url);
+		RestClient webService = createRestClient();
 
 		// Pass the parameters if needed , if not then pass dummy one as follows
 		Map<String, String> params = new HashMap<String, String>();
-		String iso3countryCode = locale.getCountry();
-		String iso2countryCode = getiso2countryCodeFromiso3countryCode(iso3countryCode);
-		Log.d(LOG_TAG, "country='" + locationName + "'");
-		Log.d(LOG_TAG, "country='" + iso2countryCode + "'");
-		params.put("country", iso2countryCode);
-		params.put("address", locationName);
-		params.put("format", FORMAT);
+		String iso2countryCode = locale.getCountry();
+		log_d("locationName='" + locationName + "'");
+		log_d("country='" + iso2countryCode + "'");
+		params.put(COUNTRY_PARAMETER_NAME, iso2countryCode);
+		params.put(ADDRESS_PARAMETER_NAME, locationName);
+		params.put(FORMAT_PARAMETER_NAME, DEFAULT_FORMAT);
 		if (apiKey != null) {
-			params.put("apikey", apiKey + "");
+			params.put(APIKEY_PARAMETER_NAME, apiKey + "");
 			// TODO test
 		}
 
@@ -264,12 +298,14 @@ public class GisgraphyGeocoder {
 
 	}
 
-	private String getiso2countryCodeFromiso3countryCode(String iso3countryCode) {
-		return iso3countryCode.substring(0, 2);
+	
+
+	protected RestClient createRestClient() {
+		return new RestClient(baseUrl);
 	}
 
 	private void checkUrl() throws IOException {
-		if (url == null) {
+		if (baseUrl == null) {
 			throw new IOException(this.getClass().getSimpleName() + " is not initialize, please call setUrl before calling geocoding methods");
 		}
 	}
@@ -302,20 +338,21 @@ public class GisgraphyGeocoder {
 		this.apiKey = apiKey;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public Locale getLocale() {
 		return locale;
 	}
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+
+	/**
+	 * @return the base url of the gisgraphy services.
+	 * @see #DEFAULT_BASE_URL
+	 * @see GisgraphyGeocoder#setBaseUrl(String)
+	 */
+	public String getBaseUrl() {
+		return baseUrl;
 	}
 
 }
