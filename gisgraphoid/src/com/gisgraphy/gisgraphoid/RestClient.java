@@ -41,7 +41,7 @@ public class RestClient {
 		if (methodName.startsWith("/")) {
 			methodName = methodName.substring(1);
 		}
-		String getUrl = webServiceUrl + methodName;
+		String getUrl = getWebServiceUrl() + methodName;
 
 		int i = 0;
 		StringBuffer sb = new StringBuffer(getUrl);
