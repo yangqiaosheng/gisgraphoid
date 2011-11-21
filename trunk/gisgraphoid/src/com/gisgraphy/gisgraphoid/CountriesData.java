@@ -263,18 +263,21 @@ public class CountriesData {
 		}
 	};
 
-	public static ArrayList<String> sortedCountriesName = new ArrayList<String>(CountriesData.countriesnameToCountryCodeMap.keySet());
+	public static ArrayList<String> sortedCountriesName = new ArrayList<String>(CountriesData.countriesnameToCountryCodeMap.keySet()){
+	    private static final long serialVersionUID = 1671688713929233996L;
+
 	{
-		Collections.sort(sortedCountriesName);
+		Collections.sort(this);
 		
 	}
+	};
 
 	public static String getCountryCodeFromCountryName(String countryname) {
 		return countriesnameToCountryCodeMap.get(countryname);
 	}
 	
 	public static String getCountryCodeFromPosition(int position) {
-		return countriesnameToCountryCodeMap.get(position);
+		return sortedCountriesName.get(position);
 	}
 
 	public static String getCountryNameFromCountryCode(String countryCode) {
@@ -288,8 +291,9 @@ public class CountriesData {
 	
 	public static int getPositionFromCountryCode(String countryCode) {
 		int position =0;
-		for (Entry<String, String> entry : countriesnameToCountryCodeMap.entrySet()) {
-			if (entry.getValue().equalsIgnoreCase(countryCode)) {
+		String countryNameToSearch = getCountryNameFromCountryCode(countryCode);
+		for (String country : sortedCountriesName) {
+			if (country.equalsIgnoreCase(countryNameToSearch)) {
 				return position; 
 			}
 			position++;
