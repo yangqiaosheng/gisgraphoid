@@ -14,6 +14,7 @@ import android.location.Address;
 import android.util.Log;
 
 import com.gisgraphy.addressparser.AddressResultsDto;
+import com.gisgraphy.addressparser.GeocodingLevels;
 
 /**
  * A class for handling geocoding and reverse geocoding with Gisgraphy.
@@ -28,14 +29,14 @@ import com.gisgraphy.addressparser.AddressResultsDto;
  * return an empty list if there no backend service in the platform. Use the
  * isPresent() method to determine whether a Geocoder implementation exists.
  * 
+ * you can use this class as a singleton if the local is not changed
+ * 
  * usage : TODO
  */
 public class GisgraphyGeocoder {
 
-
-	
-
 	private static String LOG_TAG = GisgraphyGeocoder.class.getSimpleName();
+	protected AndroidAddressBuilder addressBuilder ;
 	/**
 	 * the api key parameter name. <br/>
 	 * This parameter is only required for Gisgraphy premium services
@@ -66,16 +67,16 @@ public class GisgraphyGeocoder {
 	private Long apiKey;
 	private String baseUrl = DEFAULT_BASE_URL;
 
-	
 	/**
 	 * this method purpose is only to mock the call to android logger during
 	 * tests. but feel free to override
 	 * 
 	 */
-	protected void log_d( String message) {
+	protected void log_d(String message) {
 		Log.d(LOG_TAG, message);
-		
+
 	}
+
 	static boolean isPresent() {
 		return true;
 	}
@@ -118,6 +119,7 @@ public class GisgraphyGeocoder {
 			throw new IllegalArgumentException(LOG_TAG + " does not accept null locale");
 		}
 		this.locale = locale;
+		addressBuilder = new AndroidAddressBuilder(locale);
 	}
 
 	/**
@@ -139,6 +141,7 @@ public class GisgraphyGeocoder {
 		}
 		setBaseUrl(url);
 		this.locale = locale;
+		addressBuilder = new AndroidAddressBuilder(locale);
 	}
 
 	/**
@@ -151,6 +154,7 @@ public class GisgraphyGeocoder {
 	 *            the desired Locale for the query results
 	 */
 	public GisgraphyGeocoder(Context context) {
+		addressBuilder = new AndroidAddressBuilder();
 	}
 
 	/**
@@ -165,6 +169,7 @@ public class GisgraphyGeocoder {
 	 */
 	public GisgraphyGeocoder(Context context, String url) {
 		this.locale = Locale.getDefault();
+		addressBuilder = new AndroidAddressBuilder(locale);
 		setBaseUrl(url);
 	}
 
@@ -292,13 +297,11 @@ public class GisgraphyGeocoder {
 		// webService.webGet("getMoreAllerts", params);
 		AddressResultsDto response = webService.get(GEOCODING_URI, AddressResultsDto.class, params);
 		if (response != null && response.getResult() != null && response.getResult().size() > 0) {
-			androidAddress = transformGisgraphyAdressToAndroidAddress(response.getResult());
+			androidAddress = addressBuilder.transformGisgraphyAdressToAndroidAddress(response.getResult());
 		}
 		return androidAddress;
 
 	}
-
-	
 
 	protected RestClient createRestClient() {
 		return new RestClient(baseUrl);
@@ -310,13 +313,7 @@ public class GisgraphyGeocoder {
 		}
 	}
 
-	private List<Address> transformGisgraphyAdressToAndroidAddress(List<com.gisgraphy.addressparser.Address> gisgraphyaddresses) {
-		List<Address> addresses = new ArrayList<Address>();
-		Address address = new Address(locale);
-		addresses.add(address);
-		return addresses;
-	}
-
+	
 	/**
 	 * @return the apikey. apikey is only used for Gisgraphy premium services.
 	 *         It is not required for free services (when those lines are
