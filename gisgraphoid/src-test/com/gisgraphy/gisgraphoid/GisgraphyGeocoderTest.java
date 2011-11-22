@@ -10,11 +10,18 @@ import junit.framework.Assert;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import android.location.Address;
 
 import com.gisgraphy.addressparser.AddressResultsDto;
+import com.xtremelabs.robolectric.RobolectricTestRunner;
 
+/**
+ * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ *
+ */
+@RunWith(RobolectricTestRunner.class)
 public class GisgraphyGeocoderTest {
 
     @Test(expected=IllegalArgumentException.class)
@@ -95,13 +102,14 @@ public class GisgraphyGeocoderTest {
     	AddressResultsDto addressResultsDto = new AddressResultsDto(results,10L);
     	
     	final RestClient restClientMock = EasyMock.createMock(RestClient.class);
-    	EasyMock.expect(restClientMock.getWebServiceUrl()).andReturn(baseUrl);
+    	//EasyMock.expect(restClientMock.getWebServiceUrl()).andReturn(baseUrl);
     	HashMap<String, String> params = new HashMap<String, String>();
     	params.put(GisgraphyGeocoder.FORMAT_PARAMETER_NAME	, GisgraphyGeocoder.DEFAULT_FORMAT);
     	params.put(GisgraphyGeocoder.ADDRESS_PARAMETER_NAME	, addressToGeocode);
     	params.put(GisgraphyGeocoder.COUNTRY_PARAMETER_NAME	, Locale.getDefault().getCountry());
     	params.put(GisgraphyGeocoder.APIKEY_PARAMETER_NAME	, apiKey+"");
     	EasyMock.expect(restClientMock.get(GisgraphyGeocoder.GEOCODING_URI, AddressResultsDto.class, params)).andReturn(addressResultsDto);
+    	EasyMock.replay(restClientMock);
     	GisgraphyGeocoder geocoder = new GisgraphyGeocoder(null){
     		@Override
     		protected RestClient createRestClient() {
@@ -113,12 +121,13 @@ public class GisgraphyGeocoderTest {
     	};
     	geocoder.setApiKey(apiKey);
     	List<Address> AndroidAddress = geocoder.getFromLocationName(addressToGeocode, 6);
+    	EasyMock.verify(restClientMock);
     	Assert.assertEquals("the max parameter should be taken into account",numberOfResults, AndroidAddress.size());
     }
     
     @Test
     public void isPresent(){
-    	Assert.assertTrue(new GisgraphyGeocoder(null).isPresent());
+    	Assert.assertTrue(GisgraphyGeocoder.isPresent());
     }
     
     private List<com.gisgraphy.addressparser.Address> createGisgraphyAddresses(int numberOfResults){

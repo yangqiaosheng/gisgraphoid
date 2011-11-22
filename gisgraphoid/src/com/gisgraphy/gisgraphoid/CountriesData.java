@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ *@author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ *
+ */
 public class CountriesData {
 	public final static Map<String, String> countriesnameToCountryCodeMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 4762318033721437587L;

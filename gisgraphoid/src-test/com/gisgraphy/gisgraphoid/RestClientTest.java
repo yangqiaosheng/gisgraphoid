@@ -10,6 +10,10 @@ import org.junit.runner.RunWith;
 import com.gisgraphy.addressparser.AddressResultsDto;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
+/**
+ * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ *
+ */
 @RunWith(RobolectricTestRunner.class)
 public class RestClientTest {
 

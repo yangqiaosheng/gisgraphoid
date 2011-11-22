@@ -31,6 +31,8 @@ import com.gisgraphy.addressparser.GeocodingLevels;
  * 
  * you can use this class as a singleton if the local is not changed
  * 
+ * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ * 
  * usage : TODO
  */
 public class GisgraphyGeocoder {
@@ -276,7 +278,7 @@ public class GisgraphyGeocoder {
 	 */
 	public List<Address> getFromLocationName(String locationName, int maxResults) throws IOException {
 		checkUrl();
-		List<Address> androidAddress = new ArrayList<Address>();
+		List<Address> androidAddresses = new ArrayList<Address>();
 		RestClient webService = createRestClient();
 
 		// Pass the parameters if needed , if not then pass dummy one as follows
@@ -297,9 +299,12 @@ public class GisgraphyGeocoder {
 		// webService.webGet("getMoreAllerts", params);
 		AddressResultsDto response = webService.get(GEOCODING_URI, AddressResultsDto.class, params);
 		if (response != null && response.getResult() != null && response.getResult().size() > 0) {
-			androidAddress = addressBuilder.transformGisgraphyAdressToAndroidAddress(response.getResult());
+			androidAddresses = addressBuilder.transformGisgraphyAdressesToAndroidAddresses(response.getResult());
 		}
-		return androidAddress;
+		if (androidAddresses.size()>maxResults){
+		    return androidAddresses.subList(0, maxResults);
+		}
+		return androidAddresses;
 
 	}
 
