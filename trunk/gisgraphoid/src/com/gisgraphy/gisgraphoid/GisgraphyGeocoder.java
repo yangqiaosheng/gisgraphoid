@@ -14,7 +14,6 @@ import android.location.Address;
 import android.util.Log;
 
 import com.gisgraphy.addressparser.AddressResultsDto;
-import com.gisgraphy.addressparser.GeocodingLevels;
 
 /**
  * A class for handling geocoding and reverse geocoding with Gisgraphy.
