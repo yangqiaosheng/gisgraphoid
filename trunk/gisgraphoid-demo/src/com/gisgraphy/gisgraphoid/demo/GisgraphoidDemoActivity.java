@@ -8,10 +8,13 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,6 +36,10 @@ import com.gisgraphy.gisgraphoid.CountriesData;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
 
+/**
+ * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ * 
+ */
 public class GisgraphoidDemoActivity extends Activity {
     private static final String LOG_TAG = "gisgraphoid-demo";
 
@@ -45,11 +52,12 @@ public class GisgraphoidDemoActivity extends Activity {
     protected EditText address;
     protected ListView mList;
     protected Spinner spinner;
+    //ProgressDialog progressDialog ;
+    protected static final int MSG_DONE = 0;
     protected GisgraphyGeocoder gisgraphyGeocoder;
     protected static List<String> SORTED_COUNTRY_LIST = CountriesData.sortedCountriesName;
     protected static String[] SORTED_COUNTRY_ARRAY = CountriesData.sortedCountriesName.toArray(new String[CountriesData.sortedCountriesName.size()]);
 
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -57,6 +65,8 @@ public class GisgraphoidDemoActivity extends Activity {
 
 	address = (EditText) findViewById(R.id.simpleGM_adress);
 	mList = (ListView) findViewById(R.id.results);
+	
+	//progressDialog = new ProgressDialog(this);
 
 	spinner = (Spinner) findViewById(R.id.spinnerlocale);
 	Collections.sort(SORTED_COUNTRY_LIST);
@@ -91,45 +101,78 @@ public class GisgraphoidDemoActivity extends Activity {
     }
 
     protected void doGeocoding() {
-	String addressInput = address.getText().toString();
-	if (addressInput == null || addressInput.trim().equals("")) {
-	    Dialog emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null)
-		    .setMessage(getResources().getString(R.string.empty_input)).create();
-	    emptyAddressInputDialog.show();
-	    return;
-	}
+//	progressDialog.setMessage(getResources().getString(R.string.geocoding_in_progress));
+	//progressDialog.show();
 
-	int spinnerItemPosition = spinner.getSelectedItemPosition();
-	Log.i(LOG_TAG, "spinner item position = " + spinnerItemPosition);
-	String countryCode = CountriesData.getCountryCodeFromPosition(spinnerItemPosition);
-	Log.i(LOG_TAG, "countrycode selected=" + countryCode);
-	Locale locale = new Locale("EN", countryCode);
+	new Thread(new Runnable() {
+	    public void run() {
+		try {
+		    String addressInput = address.getText().toString();
+		    if (addressInput == null || addressInput.trim().equals("")) {
+			Dialog emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null)
+				.setMessage(getResources().getString(R.string.empty_input)).create();
+			emptyAddressInputDialog.show();
+			return;
+		    }
 
-	gisgraphyGeocoder = createGeocoder(locale); // create new geocoder
-						    // instance
-	// gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
-	try {
-	    gisgraphyGeocoder.getFromLocationName(addressInput, 1);
-	    List<Address> foundAdresses = gisgraphyGeocoder.getFromLocationName(addressInput, 5); // Search
-	    // addresses
+		    int spinnerItemPosition = spinner.getSelectedItemPosition();
+		    Log.i(LOG_TAG, "spinner item position = " + spinnerItemPosition);
+		    String countryCode = CountriesData.getCountryCodeFromPosition(spinnerItemPosition);
+		    Log.i(LOG_TAG, "countrycode selected=" + countryCode);
+		    Locale locale = new Locale("EN", countryCode);
 
-	    if (foundAdresses.size() == 0) {
-		// if no address found, display an error
-		Log.i(LOG_TAG, "no result found for " + addressInput);
-		Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null)
-			.setMessage(getResources().getString(R.string.no_result)).create();
-		locationError.show();
-	    } else {
-		// else display result
-		Log.i(LOG_TAG, foundAdresses.size() + " result(s) found for " + addressInput);
-		AddressAdapter addressAdapter = new AddressAdapter(foundAdresses);
-		mList.setAdapter(addressAdapter);
-		mList.setOnItemClickListener(addressAdapter);
+		    gisgraphyGeocoder = createGeocoder(locale); // create new
+								// geocoder
+								// instance
+		    // gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
+		    try {
+			gisgraphyGeocoder.getFromLocationName(addressInput, 1);
+			List<Address> foundAdresses = gisgraphyGeocoder.getFromLocationName(addressInput, 5); // Search
+			// addresses
+
+			if (foundAdresses.size() == 0) {
+			    // if no address found, display an error
+			    Log.i(LOG_TAG, "no result found for " + addressInput);
+			    Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null)
+				    .setMessage(getResources().getString(R.string.no_result)).create();
+			    locationError.show();
+			} else {
+			    // else display result
+			    Log.i(LOG_TAG, foundAdresses.size() + " result(s) found for " + addressInput);
+			    AddressAdapter addressAdapter = new AddressAdapter(foundAdresses);
+			    mList.setAdapter(addressAdapter);
+			    mList.setOnItemClickListener(addressAdapter);
+			}
+			//handler.sendEmptyMessage(MSG_DONE);
+		    } catch (Exception e) {
+			Log.e(LOG_TAG, "Error during geocoding of " + addressInput + " : " + e.getMessage(), e);
+		    }
+		} catch (Exception e) {
+		    Log.e(LOG_TAG, "error during geocoding : "+e.getMessage(),e);
+		} finally {
+		  //  handler.sendEmptyMessage(MSG_DONE);
+		    //progressDialog.dismiss();
+		}
 	    }
-	} catch (Exception e) {
-	    Log.e(LOG_TAG, "Error during geocoding of " + addressInput + " : " + e.getMessage(), e);
-	}
+	}).start();
     }
+    
+    /**
+	 * Handler for data set changed
+	 */
+	private final Handler handler = new Handler() {
+	    public void handleMessage(Message message) {
+	        switch (message.what) {
+	        case MSG_DONE:
+	          /*  if (progressDialog.isShowing()) {
+	                progressDialog.dismiss();
+	            }*/
+	            break;
+	        default:
+	            break;
+	        }
+	    }
+	};
 
     protected GisgraphyGeocoder createGeocoder(Locale locale) {
 	// return new GisgraphyGeocoder(this,locale);
