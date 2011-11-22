@@ -14,6 +14,7 @@ import android.location.Address;
  */
 public class AndroidAddressBuilder {
 	
+	protected static final String STREET_BASE_URL = "http://services.gisgraphy.com/public/displaystreet.html?gid=";
 	private Locale locale ;
 	
 	public AndroidAddressBuilder(Locale locale) {
@@ -96,7 +97,7 @@ public class AndroidAddressBuilder {
 
 	protected String buildAddressUrl(com.gisgraphy.addressparser.Address gisgraphyAddress) {
 		if (gisgraphyAddress != null && gisgraphyAddress.getId() != null) {
-			return "http://services.gisgraphy.com/public/displaystreet.html?gid=" + gisgraphyAddress.getId();
+			return STREET_BASE_URL + gisgraphyAddress.getId();
 		} else {
 			return null;
 		}

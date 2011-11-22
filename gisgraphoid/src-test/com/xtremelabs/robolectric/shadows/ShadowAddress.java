@@ -60,7 +60,7 @@ public class ShadowAddress {
 
     @Implementation
     public String getAddressLine(int index) {
-        return addressLines.get(index);
+        return addressLines.size()<=index? null:addressLines.get(index);
     }
 
     @Implementation

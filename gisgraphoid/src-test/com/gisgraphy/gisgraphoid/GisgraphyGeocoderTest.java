@@ -55,6 +55,8 @@ public class GisgraphyGeocoderTest {
     public void ConstructorShouldSetTheLocale(){
 	Locale locale =Locale.CANADA;
 	GisgraphyGeocoder geocoder = new GisgraphyGeocoder(null,locale);
+	Assert.assertNotNull(geocoder.addressBuilder);
+	Assert.assertEquals(locale, geocoder.addressBuilder.getLocale());
 	Assert.assertEquals(locale, geocoder.getLocale());
     }
     
@@ -63,6 +65,8 @@ public class GisgraphyGeocoderTest {
 	Locale locale =Locale.CANADA;
 	String url = "http://www.gisgraphy.com/";
 	GisgraphyGeocoder geocoder = new GisgraphyGeocoder(null,locale,url);
+	Assert.assertNotNull(geocoder.addressBuilder);
+	Assert.assertEquals(locale, geocoder.addressBuilder.getLocale());
 	Assert.assertEquals(locale, geocoder.getLocale());
 	Assert.assertEquals(url, geocoder.getBaseUrl());
     }
