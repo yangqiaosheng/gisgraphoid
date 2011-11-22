@@ -15,6 +15,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+/**
+ * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ *
+ */
 public class RestClient {
 	{
 		System.setProperty("http.agent", "gisgraphoid-1.0");

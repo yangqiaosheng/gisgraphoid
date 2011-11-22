@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.junit.Assert;
+
 import android.location.Address;
 
+/**
+ *
+ *@author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+ */
 public class AndroidAddressBuilder {
 	
-	Locale locale ;
+	private Locale locale ;
 	
 	public AndroidAddressBuilder(Locale locale) {
 		this.locale = locale;
@@ -18,7 +24,11 @@ public class AndroidAddressBuilder {
 		this.locale = Locale.getDefault();
 	}
 
-	public List<Address> transformGisgraphyAdressToAndroidAddress(List<com.gisgraphy.addressparser.Address> gisgraphyAddresses) {
+	/**
+	 * @param gisgraphyAddresses the gisgraphy address list
+	 * @return a list of android address or an empty list.
+	 */
+	public List<Address> transformGisgraphyAdressesToAndroidAddresses(List<com.gisgraphy.addressparser.Address> gisgraphyAddresses) {
 		List<Address> androidAddresses = new ArrayList<Address>();
 		if (gisgraphyAddresses != null) {
 			for (com.gisgraphy.addressparser.Address address : gisgraphyAddresses) {
@@ -31,6 +41,10 @@ public class AndroidAddressBuilder {
 		return androidAddresses;
 	}
 
+	/**
+	 * @param gisgraphyAddress a gisgraphy address
+	 * @return an Android Address
+	 */
 	public Address transformGisgraphyAdressToAndroidAddress(com.gisgraphy.addressparser.Address gisgraphyAddress) {
 		Address androidAddress = new Address(locale);
 		String countryCode = locale.getCountry();
@@ -44,12 +58,12 @@ public class AndroidAddressBuilder {
 			androidAddress.setAddressLine(1, computeCityLine(gisgraphyAddress));
 		} else if (gisgraphyAddress.getCity() != null) {
 			androidAddress.setFeatureName(gisgraphyAddress.getCity());
+			androidAddress.setAddressLine(0, computeCityLine(gisgraphyAddress));
 		}
 		androidAddress.setLocality(gisgraphyAddress.getCity());
 		androidAddress.setAdminArea(gisgraphyAddress.getState());
 		androidAddress.setPostalCode(gisgraphyAddress.getZipCode());
 		androidAddress.setUrl(buildAddressUrl(gisgraphyAddress));
-		androidAddress.setAddressLine(0, computeCityLine(gisgraphyAddress));
 		return androidAddress;
 	}
 

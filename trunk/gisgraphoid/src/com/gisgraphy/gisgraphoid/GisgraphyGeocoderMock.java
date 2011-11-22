@@ -10,6 +10,7 @@ import android.location.Address;
 
 /**
  * a simple mock that returns some addresses
+ * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
  * 
  * usage : TODO
  */
