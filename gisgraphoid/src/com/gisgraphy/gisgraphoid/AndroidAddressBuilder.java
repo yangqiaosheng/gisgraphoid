@@ -6,6 +6,8 @@ import java.util.Locale;
 
 import android.location.Address;
 
+import com.gisgraphy.domain.valueobject.CountriesStaticData;
+
 /**
  *
  *@author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
@@ -48,7 +50,7 @@ public class AndroidAddressBuilder {
 		Address androidAddress = new Address(locale);
 		String countryCode = locale.getCountry();
 		androidAddress.setCountryCode(countryCode);
-		androidAddress.setCountryName(CountriesData.getCountryNameFromCountryCode(countryCode));
+		androidAddress.setCountryName(CountriesStaticData.getCountryNameFromCountryCode(countryCode));
 		androidAddress.setLatitude(gisgraphyAddress.getLat());
 		androidAddress.setLongitude(gisgraphyAddress.getLng());
 		if (gisgraphyAddress.getStreetName() != null) {
