@@ -32,7 +32,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TwoLineListItem;
 
-import com.gisgraphy.gisgraphoid.CountriesData;
+import com.gisgraphy.domain.valueobject.CountriesStaticData;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
 
@@ -46,8 +46,8 @@ import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
 public class GisgraphoidDemoActivity extends Activity {
 	private static final String LOG_TAG = "gisgraphoid-demo";
 
-	protected static List<String> SORTED_COUNTRY_LIST = CountriesData.sortedCountriesName;
-	protected static String[] SORTED_COUNTRY_ARRAY = CountriesData.sortedCountriesName.toArray(new String[CountriesData.sortedCountriesName.size()]);
+	protected static List<String> SORTED_COUNTRY_LIST = CountriesStaticData.sortedCountriesName;
+	protected static String[] SORTED_COUNTRY_ARRAY = CountriesStaticData.sortedCountriesName.toArray(new String[CountriesStaticData.sortedCountriesName.size()]);
 
 	protected static final int DATA_CHANGED = 0;
 	protected static final int NO_INPUT = 1;
@@ -111,8 +111,8 @@ public class GisgraphoidDemoActivity extends Activity {
 		spinner.setAdapter(countryCodeAdapter);
 		String defaultcountryCode = Locale.getDefault().getCountry();
 		Log.i(LOG_TAG, "default country code=" + defaultcountryCode);
-		int position = CountriesData.getPositionFromCountryCode(defaultcountryCode);
-		Log.i(LOG_TAG, "set spinner position to " + position + ". Country=" + CountriesData.sortedCountriesName.get(position));
+		int position = CountriesStaticData.getPositionFromCountryCode(defaultcountryCode);
+		Log.i(LOG_TAG, "set spinner position to " + position + ". Country=" + CountriesStaticData.sortedCountriesName.get(position));
 		spinner.setSelection(position);
 
 		// button
@@ -139,7 +139,7 @@ public class GisgraphoidDemoActivity extends Activity {
 					// get Locale and country
 					int spinnerItemPosition = spinner.getSelectedItemPosition();
 					Log.i(LOG_TAG, "spinner item position = " + spinnerItemPosition);
-					String countryCode = CountriesData.getCountryCodeFromPosition(spinnerItemPosition);
+					String countryCode = CountriesStaticData.getCountryCodeFromPosition(spinnerItemPosition);
 					Log.i(LOG_TAG, "countrycode selected=" + countryCode);
 					Locale locale = new Locale("EN", countryCode);
 
