@@ -233,7 +233,7 @@ public class GisgraphyGeocoder {
 	 *            the latitude of the upper right corner of the bounding box
 	 * @param upperRightLongitude
 	 *            the longitude of the upper right corner of the bounding box
-	 * @return a list of Address objects. Returns null or empty list if no
+	 * @return a list of Address objects. Returns empty list if no
 	 *         matches were found or there is no backend service available.
 	 * @throws IllegalArgumentException
 	 *             if locationName is null
@@ -339,13 +339,13 @@ public class GisgraphyGeocoder {
 		this.apiKey = apiKey;
 	}
 
+	/**
+	 * @return the locale of the geocoder
+	 */
 	public Locale getLocale() {
 		return locale;
 	}
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
 
 	/**
 	 * @return the base url of the gisgraphy services.
