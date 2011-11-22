@@ -35,6 +35,7 @@ public final class R {
         public static final int choosecountry=0x7f040004;
         public static final int dialog_default_title=0x7f04000c;
         public static final int empty_input=0x7f04000b;
+        public static final int error=0x7f04000e;
         public static final int geocoding_in_progress=0x7f04000d;
         public static final int go=0x7f040002;
         public static final int input=0x7f040005;

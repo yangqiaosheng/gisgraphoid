@@ -6,7 +6,7 @@
     <string name="go">Geocode</string>
     <string name="address">Select a country and enter an address :</string>
     <string name="choosecountry">Select a country</string>
-    <string name="input">Adress, City, Street</string>
+    <string name="input">Address, City, Street</string>
     <string name="ok">Ok</string>
     <string name="latitude">Lat</string>
     <string name="longitude">Long</string>
@@ -15,6 +15,7 @@
     <string name="empty_input">Please enter an address, city or street</string>
     <string name="dialog_default_title">Oops </string>
     <string name="geocoding_in_progress">Geocoding in progress</string>
+    <string name="error">An error ha occurred</string>
           
 
 </resources>

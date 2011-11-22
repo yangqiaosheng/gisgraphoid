@@ -37,210 +37,259 @@ import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
 
 /**
+ * Sample code to use Gisgraphoid Geocoder
+ * @see {@link GisgraphyGeocoder}
+ * 
  * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
  * 
  */
 public class GisgraphoidDemoActivity extends Activity {
-    private static final String LOG_TAG = "gisgraphoid-demo";
+	private static final String LOG_TAG = "gisgraphoid-demo";
 
-    protected boolean isRouteDisplayed() {
-	return false;
-    }
+	protected static List<String> SORTED_COUNTRY_LIST = CountriesData.sortedCountriesName;
+	protected static String[] SORTED_COUNTRY_ARRAY = CountriesData.sortedCountriesName.toArray(new String[CountriesData.sortedCountriesName.size()]);
 
-    // private MapView googleMap;
-    protected Button btnSearch;
-    protected EditText address;
-    protected ListView mList;
-    protected Spinner spinner;
-    //ProgressDialog progressDialog ;
-    protected static final int MSG_DONE = 0;
-    protected GisgraphyGeocoder gisgraphyGeocoder;
-    protected static List<String> SORTED_COUNTRY_LIST = CountriesData.sortedCountriesName;
-    protected static String[] SORTED_COUNTRY_ARRAY = CountriesData.sortedCountriesName.toArray(new String[CountriesData.sortedCountriesName.size()]);
+	protected static final int DATA_CHANGED = 0;
+	protected static final int NO_INPUT = 1;
+	protected static final int NO_RESULT = 2;
+	protected static final int GEOCODING_IN_PROGRESS = 3;
+	protected static final int GEOCODING_DONE = 4;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.main);
+	// private MapView googleMap;
+	protected Button btnSearch;
+	protected EditText addressInput;
+	protected ListView mList;
+	protected Spinner spinner;
+	protected ProgressDialog progressDialog;
 
-	address = (EditText) findViewById(R.id.simpleGM_adress);
-	mList = (ListView) findViewById(R.id.results);
-	
-	//progressDialog = new ProgressDialog(this);
+	protected Dialog emptyAddressInputDialog;
+	protected Dialog noResultDialog;
 
-	spinner = (Spinner) findViewById(R.id.spinnerlocale);
-	Collections.sort(SORTED_COUNTRY_LIST);
+	protected GisgraphyGeocoder gisgraphyGeocoder;
 
-	ArrayAdapter<String> countryCodeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, SORTED_COUNTRY_ARRAY);
-	// countryCodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-	spinner.setAdapter(countryCodeAdapter);
-	String defaultcountryCode = Locale.getDefault().getCountry();
-	Log.i(LOG_TAG, "default country code=" + defaultcountryCode);
-	int position = CountriesData.getPositionFromCountryCode(defaultcountryCode);
-	Log.i(LOG_TAG, "set spinner position to " + position + ". Country=" + CountriesData.sortedCountriesName.get(position));
-	spinner.setSelection(position);
+	protected AddressResultAdapter addressAdapter;
 
-	btnSearch = (Button) findViewById(R.id.simpleGM_btn_search);
-	address.setMaxLines(1);
-	address.requestFocus();
-	btnSearch.setOnClickListener(new OnClickListener() {
-	    public void onClick(View v) {
-		doGeocoding();
-	    }
-	});
-	address.setOnKeyListener(new OnKeyListener() {
-	    public boolean onKey(View v, int keyCode, KeyEvent event) {
-		if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-		    doGeocoding();
-		    return true;
-		}
-		return false;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
 
-	    }
-	});
-    }
+		// error dialogs
+		emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.empty_input)).create();
+		noResultDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
 
-    protected void doGeocoding() {
-//	progressDialog.setMessage(getResources().getString(R.string.geocoding_in_progress));
-	//progressDialog.show();
+		// input
+		addressInput = (EditText) findViewById(R.id.simpleGM_adress);
+		addressInput.setMaxLines(1);
+		addressInput.requestFocus();
 
-	new Thread(new Runnable() {
-	    public void run() {
-		try {
-		    String addressInput = address.getText().toString();
-		    if (addressInput == null || addressInput.trim().equals("")) {
-			Dialog emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null)
-				.setMessage(getResources().getString(R.string.empty_input)).create();
-			emptyAddressInputDialog.show();
-			return;
-		    }
+		addressInput.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+					doGeocoding();
+					return true;
+				}
+				return false;
 
-		    int spinnerItemPosition = spinner.getSelectedItemPosition();
-		    Log.i(LOG_TAG, "spinner item position = " + spinnerItemPosition);
-		    String countryCode = CountriesData.getCountryCodeFromPosition(spinnerItemPosition);
-		    Log.i(LOG_TAG, "countrycode selected=" + countryCode);
-		    Locale locale = new Locale("EN", countryCode);
-
-		    gisgraphyGeocoder = createGeocoder(locale); // create new
-								// geocoder
-								// instance
-		    // gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
-		    try {
-			gisgraphyGeocoder.getFromLocationName(addressInput, 1);
-			List<Address> foundAdresses = gisgraphyGeocoder.getFromLocationName(addressInput, 5); // Search
-			// addresses
-
-			if (foundAdresses.size() == 0) {
-			    // if no address found, display an error
-			    Log.i(LOG_TAG, "no result found for " + addressInput);
-			    Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null)
-				    .setMessage(getResources().getString(R.string.no_result)).create();
-			    locationError.show();
-			} else {
-			    // else display result
-			    Log.i(LOG_TAG, foundAdresses.size() + " result(s) found for " + addressInput);
-			    AddressAdapter addressAdapter = new AddressAdapter(foundAdresses);
-			    mList.setAdapter(addressAdapter);
-			    mList.setOnItemClickListener(addressAdapter);
 			}
-			//handler.sendEmptyMessage(MSG_DONE);
-		    } catch (Exception e) {
-			Log.e(LOG_TAG, "Error during geocoding of " + addressInput + " : " + e.getMessage(), e);
-		    }
-		} catch (Exception e) {
-		    Log.e(LOG_TAG, "error during geocoding : "+e.getMessage(),e);
-		} finally {
-		  //  handler.sendEmptyMessage(MSG_DONE);
-		    //progressDialog.dismiss();
-		}
-	    }
-	}).start();
-    }
-    
-    /**
-	 * Handler for data set changed
+		});
+
+		// results display
+		mList = (ListView) findViewById(R.id.results);
+		addressAdapter = new AddressResultAdapter();
+		mList.setAdapter(addressAdapter);
+		mList.setOnItemClickListener(addressAdapter);
+
+		// progress dialog
+		progressDialog = new ProgressDialog(this);
+
+		// choose locale
+		spinner = (Spinner) findViewById(R.id.spinnerlocale);
+		Collections.sort(SORTED_COUNTRY_LIST);
+		ArrayAdapter<String> countryCodeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, SORTED_COUNTRY_ARRAY);
+		// countryCodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(countryCodeAdapter);
+		String defaultcountryCode = Locale.getDefault().getCountry();
+		Log.i(LOG_TAG, "default country code=" + defaultcountryCode);
+		int position = CountriesData.getPositionFromCountryCode(defaultcountryCode);
+		Log.i(LOG_TAG, "set spinner position to " + position + ". Country=" + CountriesData.sortedCountriesName.get(position));
+		spinner.setSelection(position);
+
+		// button
+		btnSearch = (Button) findViewById(R.id.simpleGM_btn_search);
+		btnSearch.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				doGeocoding();
+			}
+		});
+	}
+
+	protected void doGeocoding() {
+		progressDialog.setMessage(getResources().getString(R.string.geocoding_in_progress));
+
+		new Thread(new Runnable() {
+			public void run() {
+				try {
+					String addressToGeocode = addressInput.getText().toString();
+					// check empty address
+					if (addressToGeocode == null || addressToGeocode.trim().equals("")) {
+						handler.sendEmptyMessage(NO_INPUT);
+						return;
+					}
+					// get Locale and country
+					int spinnerItemPosition = spinner.getSelectedItemPosition();
+					Log.i(LOG_TAG, "spinner item position = " + spinnerItemPosition);
+					String countryCode = CountriesData.getCountryCodeFromPosition(spinnerItemPosition);
+					Log.i(LOG_TAG, "countrycode selected=" + countryCode);
+					Locale locale = new Locale("EN", countryCode);
+
+					gisgraphyGeocoder = createGeocoder(locale);
+					// gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
+
+					// Geocode !
+					handler.sendEmptyMessage(GEOCODING_IN_PROGRESS);
+					List<Address> foundAdresses = gisgraphyGeocoder.getFromLocationName(addressToGeocode, 5); // Search
+					handler.sendEmptyMessage(GEOCODING_DONE);
+					Log.i(LOG_TAG, foundAdresses.size() + " result found for " + addressInput);
+
+					if (foundAdresses.size() == 0) {
+						// if no address found, display a dialog box
+						Log.i(LOG_TAG, "no result found for " + addressInput);
+						handler.sendEmptyMessage(NO_RESULT);
+
+					} else {
+						// else display results
+						Log.i(LOG_TAG, foundAdresses.size() + " result(s) found for " + addressInput);
+						addressAdapter.setaddress(foundAdresses);
+						handler.sendEmptyMessage(DATA_CHANGED);
+					}
+
+				} catch (Exception e) {
+					Log.e(LOG_TAG, "Error during geocoding of " + addressInput + " : " + e.getMessage(), e);
+					Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
+					locationError.show();
+				}
+			}
+		}).start();
+	}
+
+	/**
+	 * Handler for geocoding events
 	 */
 	private final Handler handler = new Handler() {
-	    public void handleMessage(Message message) {
-	        switch (message.what) {
-	        case MSG_DONE:
-	          /*  if (progressDialog.isShowing()) {
-	                progressDialog.dismiss();
-	            }*/
-	            break;
-	        default:
-	            break;
-	        }
-	    }
+		public void handleMessage(Message message) {
+
+			switch (message.what) {
+			case DATA_CHANGED:
+				addressAdapter.notifyDataSetChanged();
+				break;
+			case NO_INPUT:
+				emptyAddressInputDialog.show();
+				break;
+			case NO_RESULT:
+				noResultDialog.show();
+				break;
+			case GEOCODING_IN_PROGRESS:
+				progressDialog.show();
+				break;
+			case GEOCODING_DONE:
+				if (progressDialog.isShowing()) {
+					progressDialog.dismiss();
+					break;
+				}
+			default:
+				break;
+			}
+		}
 	};
 
-    protected GisgraphyGeocoder createGeocoder(Locale locale) {
-	// return new GisgraphyGeocoder(this,locale);
-	return new GisgraphyGeocoderMock(this, locale);
-    }
-
-    protected void viewOnMap(Address address) {
-	Intent next = new Intent();
-	next.setClass(this, MapActivity.class);
-	next.putExtra(ExtraInfos.FEATURE_NAME, address.getFeatureName());
-	next.putExtra(ExtraInfos.LATITUDE, address.getLatitude());
-	next.putExtra(ExtraInfos.LONGITUDE, address.getLongitude());
-	startActivity(next);
-
-    }
-
-    class AddressAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
-
-	private final List<Address> addresses;
-	private final LayoutInflater mInflater;
-
-	public AddressAdapter(List<Address> addresses) {
-	    super();
-	    if (addresses == null) {
-		this.addresses = new ArrayList<Address>();
-	    } else {
-		this.addresses = addresses;
-	    }
-	    mInflater = (LayoutInflater) GisgraphoidDemoActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	/**
+	 * @param locale the locale for the geocoder
+	 * @return a new geocoder instance
+	 */
+	protected GisgraphyGeocoder createGeocoder(Locale locale) {
+		// return new GisgraphyGeocoder(this,locale);
+		return new GisgraphyGeocoderMock(this, locale);
 	}
 
-	public int getCount() {
-	    return addresses.size();
+	/**
+	 * start a new Activity to display an address on a map
+	 * @param address the address to display on a map
+	 */
+	protected void viewOnMap(Address address) {
+		Intent next = new Intent();
+		next.setClass(this, MapActivity.class);
+		next.putExtra(ExtraInfos.FEATURE_NAME, address.getFeatureName());
+		next.putExtra(ExtraInfos.LATITUDE, address.getLatitude());
+		next.putExtra(ExtraInfos.LONGITUDE, address.getLongitude());
+		startActivity(next);
+
 	}
 
-	public Object getItem(int position) {
-	    return position;
-	}
+	/**
+	 * 	Adapter to display Address results
+	 *  @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
+	 *
+	 */
+	class AddressResultAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
 
-	public long getItemId(int position) {
-	    return position;
-	}
+		private List<Address> addresses = new ArrayList<Address>();;
+		private LayoutInflater mInflater;
 
-	public View getView(int position, View convertView, ViewGroup parent) {
-	    TwoLineListItem view = (convertView != null) ? (TwoLineListItem) convertView : createView(parent);
-	    bindView(view, addresses.get(position));
-	    return view;
-	}
+		public AddressResultAdapter(List<Address> addresses) {
+			super();
+			setaddress(addresses);
+			mInflater = (LayoutInflater) GisgraphoidDemoActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
 
-	private TwoLineListItem createView(ViewGroup parent) {
-	    TwoLineListItem item = (TwoLineListItem) mInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
-	    item.getText2().setSingleLine();
-	    item.getText2().setEllipsize(TextUtils.TruncateAt.END);
-	    item.getText1().setSingleLine();
-	    item.getText1().setEllipsize(TextUtils.TruncateAt.END);
-	    return item;
-	}
+		public AddressResultAdapter() {
+			super();
+			mInflater = (LayoutInflater) GisgraphoidDemoActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
 
-	private void bindView(TwoLineListItem view, Address address) {
-	    view.getText1().setText(address.getFeatureName());
-	    view.getText2().setText(getResources().getString(R.string.latitude) + "=" + address.getLatitude() + ";" + getResources().getString(R.string.longitude) + "=" + address.getLongitude());
-	}
+		public void setaddress(List<Address> addresses) {
+			if (addresses != null) {
+				this.addresses = addresses;
+			}
+		}
 
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	    viewOnMap(addresses.get(position));
-	    finish();
-	}
+		public int getCount() {
+			return addresses.size();
+		}
 
-    }
+		public Object getItem(int position) {
+			return position;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+			TwoLineListItem view = (convertView != null) ? (TwoLineListItem) convertView : createView(parent);
+			bindView(view, addresses.get(position));
+			return view;
+		}
+
+		private TwoLineListItem createView(ViewGroup parent) {
+			TwoLineListItem item = (TwoLineListItem) mInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+			item.getText2().setSingleLine();
+			item.getText2().setEllipsize(TextUtils.TruncateAt.END);
+			item.getText1().setSingleLine();
+			item.getText1().setEllipsize(TextUtils.TruncateAt.END);
+			return item;
+		}
+
+		private void bindView(TwoLineListItem view, Address address) {
+			view.getText1().setText(address.getFeatureName());
+			view.getText2().setText(getResources().getString(R.string.latitude) + "=" + address.getLatitude() + ";" + getResources().getString(R.string.longitude) + "=" + address.getLongitude());
+		}
+
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			viewOnMap(addresses.get(position));
+			finish();
+		}
+
+	}
 
 }
