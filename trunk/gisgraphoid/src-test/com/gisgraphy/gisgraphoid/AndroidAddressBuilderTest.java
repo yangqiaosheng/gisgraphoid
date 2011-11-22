@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.gisgraphy.addressparser.Address;
+import com.gisgraphy.domain.valueobject.CountriesStaticData;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 /**
@@ -49,7 +50,7 @@ public class AndroidAddressBuilderTest {
 	android.location.Address androidAddress = builder.transformGisgraphyAdressToAndroidAddress(gisgraphyAddress);
 	Assert.assertEquals(gisgraphyAddress.getCity(), androidAddress.getLocality());
 	Assert.assertEquals(locale.getCountry(), androidAddress.getCountryCode());
-	Assert.assertEquals(CountriesData.getCountryNameFromCountryCode(locale.getCountry()), androidAddress.getCountryName());
+	Assert.assertEquals(CountriesStaticData.getCountryNameFromCountryCode(locale.getCountry()), androidAddress.getCountryName());
 	Assert.assertEquals(locale, androidAddress.getLocale());
 	Assert.assertEquals(gisgraphyAddress.getLat(), androidAddress.getLatitude());
 	Assert.assertEquals(gisgraphyAddress.getLng(), androidAddress.getLongitude());
@@ -74,7 +75,7 @@ public class AndroidAddressBuilderTest {
 	android.location.Address androidAddress = builder.transformGisgraphyAdressToAndroidAddress(gisgraphyAddress);
 	Assert.assertEquals(gisgraphyAddress.getCity(), androidAddress.getLocality());
 	Assert.assertEquals(locale.getCountry(), androidAddress.getCountryCode());
-	Assert.assertEquals(CountriesData.getCountryNameFromCountryCode(locale.getCountry()), androidAddress.getCountryName());
+	Assert.assertEquals(CountriesStaticData.getCountryNameFromCountryCode(locale.getCountry()), androidAddress.getCountryName());
 	Assert.assertEquals(locale, androidAddress.getLocale());
 	Assert.assertEquals(gisgraphyAddress.getLat(), androidAddress.getLatitude());
 	Assert.assertEquals(gisgraphyAddress.getLng(), androidAddress.getLongitude());
@@ -99,7 +100,7 @@ public class AndroidAddressBuilderTest {
 	android.location.Address androidAddress = builder.transformGisgraphyAdressToAndroidAddress(gisgraphyAddress);
 	Assert.assertEquals(gisgraphyAddress.getCity(), androidAddress.getLocality());
 	Assert.assertEquals(locale.getCountry(), androidAddress.getCountryCode());
-	Assert.assertEquals(CountriesData.getCountryNameFromCountryCode(locale.getCountry()), androidAddress.getCountryName());
+	Assert.assertEquals(CountriesStaticData.getCountryNameFromCountryCode(locale.getCountry()), androidAddress.getCountryName());
 	Assert.assertEquals(locale, androidAddress.getLocale());
 	Assert.assertEquals(gisgraphyAddress.getLat(), androidAddress.getLatitude());
 	Assert.assertEquals(gisgraphyAddress.getLng(), androidAddress.getLongitude());
