@@ -14,7 +14,7 @@
          >
         <activity
             android:label="@string/app_name"
-            android:name=".GisgraphoidDemoActivity" >
+            android:name=".GisgraphoidReverseGeocodingActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 

@@ -3,8 +3,10 @@
 
     <string name="app_name">Gisgraphoid sample</string>
     <string name="title">Gisgraphoid</string>
-    <string name="go">Geocode</string>
-    <string name="address">Select a country and enter an address :</string>
+    <string name="geocode_label">Geocode</string>
+     <string name="reverse_geocode_label">Find</string>
+    <string name="geocoding_tips">Select a country and enter an address :</string>
+    <string name="reverse_tips">Enter a latitue and a longitude :</string>
     <string name="choosecountry">Select a country</string>
     <string name="input">Address, City, Street</string>
     <string name="ok">Ok</string>
@@ -13,6 +15,8 @@
     <string name="name">name</string>
     <string name="no_result">Sorry, no Address found</string>
     <string name="empty_input">Please enter an address, city or street</string>
+      <string name="wrong_lat">Latitude should be a number between -90 and +90</string>
+      <string name="wrong_long">longitude should be a number between -180 and +180</string>
     <string name="dialog_default_title">Oops </string>
     <string name="geocoding_in_progress">Geocoding in progress</string>
     <string name="error">An error ha occurred</string>
