@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">Gisgraphoid sample</string>
+    
     <string name="title">Gisgraphoid</string>
+    <string name="geocoding">Geocoding</string>
+    <string name="reverse_geocoding">Reverse Geocoding</string>
+    <string name="about">About</string>
+     <string name="about_text">....</string>
+    
     <string name="geocode_label">Geocode</string>
      <string name="reverse_geocode_label">Find</string>
     <string name="geocoding_tips">Select a country and enter an address :</string>
