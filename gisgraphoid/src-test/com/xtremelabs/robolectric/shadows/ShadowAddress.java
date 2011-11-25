@@ -109,32 +109,32 @@ public class ShadowAddress {
     }
 
     @Implementation
-    protected void setCountryName(String countryName) {
+    public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
     @Implementation
-    protected String getUrl() {
+    public String getUrl() {
         return url;
     }
 
     @Implementation
-    protected void setUrl(String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
     @Implementation
-    protected Locale getLocale() {
+    public Locale getLocale() {
         return locale;
     }
 
     @Implementation
-    protected String getFeatureName() {
+    public String getFeatureName() {
         return featureName;
     }
 
     @Implementation
-    protected void setFeatureName(String featureName) {
+    public void setFeatureName(String featureName) {
         this.featureName = featureName;
     }
 }
