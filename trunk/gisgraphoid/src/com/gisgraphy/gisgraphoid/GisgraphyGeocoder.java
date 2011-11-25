@@ -1,5 +1,8 @@
 package com.gisgraphy.gisgraphoid;
 
+import static com.gisgraphy.gisgraphoid.JTSHelper.checkLatitude;
+import static com.gisgraphy.gisgraphoid.JTSHelper.checkLongitude;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -324,32 +327,6 @@ public class GisgraphyGeocoder {
 	}
 	return androidAddresses;
 
-    }
-
-    /**
-     * @param latitude
-     *            the latitude to test
-     * @return true if correct
-     * @throw new {@link IllegalArgumentException} if not correct
-     */
-    private boolean checkLatitude(double latitude) {
-	if (latitude < -90 || latitude > 90) {
-	    throw new IllegalArgumentException("latitude is out of bound");
-	}
-	return true;
-    }
-
-    /**
-     * @param longitude
-     *            the latitude to test
-     * @return true if correct
-     * @throw new {@link IllegalArgumentException} if not correct
-     */
-    private boolean checkLongitude(double longitude) {
-	if (longitude < -180 || longitude > 180) {
-	    throw new IllegalArgumentException("longitude is out of bound");
-	}
-	return true;
     }
 
     /**
