@@ -1,7 +1,6 @@
 package com.gisgraphy.gisgraphoid.demo;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,24 +16,22 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TwoLineListItem;
 
 import com.gisgraphy.domain.valueobject.CountriesStaticData;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
+import com.gisgraphy.gisgraphoid.JTSHelper;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Sample code to use Gisgraphoid Geocoder
@@ -44,6 +41,8 @@ import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
  * 
  */
 public class GisgraphoidReverseGeocodingActivity extends Activity {
+	public static final int MAX_RESULTS = 10;
+
 	private static final String LOG_TAG = "gisgraphoid-demo";
 
 	protected static List<String> SORTED_COUNTRY_LIST = CountriesStaticData.sortedCountriesName;
@@ -52,8 +51,10 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	protected static final int DATA_CHANGED = 0;
 	protected static final int NO_INPUT = 1;
 	protected static final int NO_RESULT = 2;
-	protected static final int GEOCODING_IN_PROGRESS = 3;
-	protected static final int GEOCODING_DONE = 4;
+	protected static final int REVERSE_GEOCODING_IN_PROGRESS = 3;
+	protected static final int REVERSE_GEOCODING_DONE = 4;
+	protected static final int WRONG_LAT = 5;
+	protected static final int WRONG_LONG = 6;
 
 	// private MapView googleMap;
 	protected Button btnSearch;
@@ -63,6 +64,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	protected ProgressDialog progressDialog;
 
 	protected Dialog wrongLatDialog;
+	protected Dialog noInputDialog;
 	protected Dialog wrongLongDialog;
 	protected Dialog noResultDialog;
 
@@ -76,6 +78,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 		setContentView(R.layout.reversegeocoding);
 
 		// error dialogs
+		noInputDialog = new AlertDialog.Builder(GisgraphoidReverseGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.lat_long_mandatory)).create();
 		wrongLatDialog = new AlertDialog.Builder(GisgraphoidReverseGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.wrong_lat)).create();
 		wrongLongDialog = new AlertDialog.Builder(GisgraphoidReverseGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.wrong_long)).create();
 		noResultDialog = new AlertDialog.Builder(GisgraphoidReverseGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
@@ -114,41 +117,58 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 
 		new Thread(new Runnable() {
 			public void run() {
-				try {
 					String latitude_input = latitude.getText().toString();
 					String longitude_input = longitude.getText().toString();
-					
-				
-					// check lat/long =>extraire une fonction dans jts helper
-					if (addressToGeocode == null || addressToGeocode.trim().equals("")) {
+					try {
+					double longitudeAsDouble;
+					double latitudeAsDouble;
+					// check lat/long are not null
+					if (latitude_input == null || latitude_input.trim().equals("") || longitude_input == null || longitude_input.trim().equals("")) {
 						handler.sendEmptyMessage(NO_INPUT);
 						return;
 					}
+					// check that latitude is a number and in the correct range
+					try {
+						 latitudeAsDouble = new Double(latitude_input);
+						 JTSHelper.checkLatitude(latitudeAsDouble);
+					} catch (Exception e) {
+						handler.sendEmptyMessage(WRONG_LAT);
+						return;
+					}
+					// check that longitude is a number and in the correct range
+					try {
+						 longitudeAsDouble = new Double(longitude_input);
+						 JTSHelper.checkLongitude(longitudeAsDouble);
+					} catch (Exception e) {
+						handler.sendEmptyMessage(WRONG_LONG);
+						return;
+					}
 					
-
+					
+					Locale locale = Locale.getDefault(); 
 					gisgraphyGeocoder = createGeocoder(locale);
 					// gisgraphyGeocoder.setBaseUrl("http://192.168.0.12:8080/geocoding/geocode");
 
 					// Reverse Geocode !
-					handler.sendEmptyMessage(GEOCODING_IN_PROGRESS);
-					List<Address> foundAdresses = gisgraphyGeocoder.getFromLocation(addressToGeocode, 5); // Search
-					handler.sendEmptyMessage(GEOCODING_DONE);
-					Log.i(LOG_TAG, foundAdresses.size() + " result found for " + addressInput);
+					handler.sendEmptyMessage(REVERSE_GEOCODING_IN_PROGRESS);
+					List<Address> foundAdresses = gisgraphyGeocoder.getFromLocation(latitudeAsDouble,longitudeAsDouble, MAX_RESULTS); // Search
+					handler.sendEmptyMessage(REVERSE_GEOCODING_DONE);
+					Log.i(LOG_TAG, foundAdresses.size() + " result found for lat=" + latitude_input+" and long="+longitude_input );
 
 					if (foundAdresses.size() == 0) {
 						// if no address found, display a dialog box
-						Log.i(LOG_TAG, "no result found for " + addressInput);
+						Log.i(LOG_TAG, "no result found for lat=" + latitude_input+" and long="+longitude_input);
 						handler.sendEmptyMessage(NO_RESULT);
 
 					} else {
 						// else display results
-						Log.i(LOG_TAG, foundAdresses.size() + " result(s) found for " + addressInput);
+						Log.i(LOG_TAG, foundAdresses.size() + " result found for lat=" + latitude_input+" and long="+longitude_input );
 						addressAdapter.setaddress(foundAdresses);
 						handler.sendEmptyMessage(DATA_CHANGED);
 					}
 
 				} catch (Exception e) {
-					Log.e(LOG_TAG, "Error during geocoding of " + addressInput + " : " + e.getMessage(), e);
+					Log.e(LOG_TAG, "Error during geocoding of  lat=" + latitude_input+" and long="+longitude_input + " : " + e.getMessage(), e);
 					Dialog locationError = new AlertDialog.Builder(GisgraphoidReverseGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
 					locationError.show();
 				}
@@ -167,19 +187,25 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 				addressAdapter.notifyDataSetChanged();
 				break;
 			case NO_INPUT:
-				wrongLatLongialog.show();
+				noInputDialog.show();
 				break;
 			case NO_RESULT:
 				noResultDialog.show();
 				break;
-			case GEOCODING_IN_PROGRESS:
+			case REVERSE_GEOCODING_IN_PROGRESS:
 				progressDialog.show();
 				break;
-			case GEOCODING_DONE:
+			case REVERSE_GEOCODING_DONE:
 				if (progressDialog.isShowing()) {
 					progressDialog.dismiss();
 					break;
 				}
+			case WRONG_LAT:
+				wrongLatDialog.show();
+				break;
+			case WRONG_LONG:
+				wrongLongDialog.show();
+				break;
 			default:
 				break;
 			}

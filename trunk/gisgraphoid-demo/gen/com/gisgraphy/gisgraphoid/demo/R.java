@@ -41,13 +41,14 @@ public final class R {
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int choosecountry=0x7f040006;
-        public static final int dialog_default_title=0x7f040010;
+        public static final int dialog_default_title=0x7f040011;
         public static final int empty_input=0x7f04000d;
-        public static final int error=0x7f040012;
+        public static final int error=0x7f040013;
         public static final int geocode_label=0x7f040002;
-        public static final int geocoding_in_progress=0x7f040011;
+        public static final int geocoding_in_progress=0x7f040012;
         public static final int geocoding_tips=0x7f040004;
         public static final int input=0x7f040007;
+        public static final int lat_long_mandatory=0x7f04000f;
         public static final int latitude=0x7f040009;
         public static final int longitude=0x7f04000a;
         public static final int name=0x7f04000b;
@@ -57,6 +58,6 @@ public final class R {
         public static final int reverse_tips=0x7f040005;
         public static final int title=0x7f040001;
         public static final int wrong_lat=0x7f04000e;
-        public static final int wrong_long=0x7f04000f;
+        public static final int wrong_long=0x7f040010;
     }
 }

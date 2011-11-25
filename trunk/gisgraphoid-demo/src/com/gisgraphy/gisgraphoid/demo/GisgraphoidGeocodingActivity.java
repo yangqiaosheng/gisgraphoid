@@ -44,6 +44,8 @@ import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
  * 
  */
 public class GisgraphoidGeocodingActivity extends Activity {
+	public static final int MAX_RESULTS = 10;
+
 	private static final String LOG_TAG = "gisgraphoid-demo";
 
 	protected static List<String> SORTED_COUNTRY_LIST = CountriesStaticData.sortedCountriesName;
@@ -148,9 +150,8 @@ public class GisgraphoidGeocodingActivity extends Activity {
 
 					// Geocode !
 					handler.sendEmptyMessage(GEOCODING_IN_PROGRESS);
-					List<Address> foundAdresses = gisgraphyGeocoder.getFromLocationName(addressToGeocode, 5); // Search
+					List<Address> foundAdresses = gisgraphyGeocoder.getFromLocationName(addressToGeocode, MAX_RESULTS); // Search
 					handler.sendEmptyMessage(GEOCODING_DONE);
-					Log.i(LOG_TAG, foundAdresses.size() + " result found for " + addressInput);
 
 					if (foundAdresses.size() == 0) {
 						// if no address found, display a dialog box
