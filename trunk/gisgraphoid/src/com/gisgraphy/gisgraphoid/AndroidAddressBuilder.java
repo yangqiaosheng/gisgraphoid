@@ -7,6 +7,7 @@ import java.util.Locale;
 import android.location.Address;
 
 import com.gisgraphy.domain.valueobject.CountriesStaticData;
+import com.gisgraphy.domain.valueobject.StreetDistance;
 
 /**
  *
@@ -29,11 +30,11 @@ public class AndroidAddressBuilder {
 	 * @param gisgraphyAddresses the gisgraphy address list
 	 * @return a list of android address or an empty list.
 	 */
-	public List<Address> transformGisgraphyAdressesToAndroidAddresses(List<com.gisgraphy.addressparser.Address> gisgraphyAddresses) {
+	public List<Address> transformGisgraphyAddressesToAndroidAddresses(List<com.gisgraphy.addressparser.Address> gisgraphyAddresses) {
 		List<Address> androidAddresses = new ArrayList<Address>();
 		if (gisgraphyAddresses != null) {
 			for (com.gisgraphy.addressparser.Address address : gisgraphyAddresses) {
-				Address androidAddress = transformGisgraphyAdressToAndroidAddress(address);
+				Address androidAddress = transformGisgraphyAddressToAndroidAddress(address);
 				if (androidAddress != null) {
 					androidAddresses.add(androidAddress);
 				}
@@ -46,7 +47,7 @@ public class AndroidAddressBuilder {
 	 * @param gisgraphyAddress a gisgraphy address
 	 * @return an Android Address
 	 */
-	public Address transformGisgraphyAdressToAndroidAddress(com.gisgraphy.addressparser.Address gisgraphyAddress) {
+	public Address transformGisgraphyAddressToAndroidAddress(com.gisgraphy.addressparser.Address gisgraphyAddress) {
 		Address androidAddress = new Address(locale);
 		String countryCode = locale.getCountry();
 		androidAddress.setCountryCode(countryCode);
@@ -64,7 +65,7 @@ public class AndroidAddressBuilder {
 		androidAddress.setLocality(gisgraphyAddress.getCity());
 		androidAddress.setAdminArea(gisgraphyAddress.getState());
 		androidAddress.setPostalCode(gisgraphyAddress.getZipCode());
-		androidAddress.setUrl(buildAddressUrl(gisgraphyAddress));
+		androidAddress.setUrl(buildAddressUrlFromGisgraphyAddress(gisgraphyAddress));
 		return androidAddress;
 	}
 
@@ -85,19 +86,32 @@ public class AndroidAddressBuilder {
 			sb.append(gisgraphyAddress.getCity()).append(" ");
 		}
 		if (gisgraphyAddress.getState() != null) {
-			sb.append(gisgraphyAddress.getState());
+			sb.append(gisgraphyAddress.getState()).append(" ");
+		}
+		if (gisgraphyAddress.getCountryCode() != null) {
+		    String countryName = CountriesStaticData.getCountryNameFromCountryCode(gisgraphyAddress.getCountryCode());
+		    if (countryName!=null)
+			sb.append(countryName).append(" ");
 		}
 		String line1 = sb.toString();
 		if (line1.trim().length() != 0) {
-			return line1;
+			return line1.trim();
 		} else {
 			return null;
 		}
 	}
 
-	protected String buildAddressUrl(com.gisgraphy.addressparser.Address gisgraphyAddress) {
+	protected String buildAddressUrlFromGisgraphyAddress(com.gisgraphy.addressparser.Address gisgraphyAddress) {
 		if (gisgraphyAddress != null && gisgraphyAddress.getId() != null) {
 			return STREET_BASE_URL + gisgraphyAddress.getId();
+		} else {
+			return null;
+		}
+	}
+	
+	protected String buildAddressUrlFromStreetDistance(StreetDistance street) {
+		if (street != null && street.getGid() != null) {
+			return STREET_BASE_URL + street.getGid();
 		} else {
 			return null;
 		}
@@ -109,6 +123,51 @@ public class AndroidAddressBuilder {
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+
+	public List<Address> transformStreetsToAndroidAddresses(List<StreetDistance> streets) {
+	    List<Address> androidAddresses = new ArrayList<Address>();
+		if (streets != null) {
+			for (StreetDistance street : streets) {
+				Address androidAddress = transformStreetToAndroidAddress(street);
+				if (street != null) {
+					androidAddresses.add(androidAddress);
+				}
+			}
+		}
+		return androidAddresses;
+	}
+
+	public Address transformStreetToAndroidAddress(StreetDistance street) {
+	    Address androidAddress = new Address(locale);
+	    androidAddress.setLatitude(street.getLat());
+	    androidAddress.setLongitude(street.getLng());
+	    String countryCode = street.getCountryCode();
+	    androidAddress.setCountryName(CountriesStaticData.getCountryNameFromCountryCode(countryCode));
+	    androidAddress.setCountryCode(countryCode);
+	    androidAddress.setFeatureName(street.getName());
+	    androidAddress.setLocality(street.getIsIn());
+	    androidAddress.setUrl(buildAddressUrlFromStreetDistance(street));
+	    androidAddress.setAddressLine(0,street.getName());
+	    androidAddress.setAddressLine(1, buildAddressLine1(street));
+	    return androidAddress;
+	}
+	
+	private String buildAddressLine1(StreetDistance streetDistance){
+	    if (streetDistance != null){
+		StringBuffer sb = new StringBuffer();
+		if (streetDistance.getIsIn()!=null){
+		    sb.append(streetDistance.getIsIn()).append(" ");
+		}
+		if (streetDistance.getCountryCode() != null) {
+		    String countryName = CountriesStaticData.getCountryNameFromCountryCode(streetDistance.getCountryCode());
+		    if (countryName!=null)
+			sb.append(countryName).append(" ");
+		}
+		return sb.toString();
+	    }else {
+		return null;
+	    }
 	}
 
 
