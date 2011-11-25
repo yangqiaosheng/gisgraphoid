@@ -43,7 +43,7 @@ import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
  * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
  * 
  */
-public class GisgraphoidDemoActivity extends Activity {
+public class GisgraphoidGeocodingActivity extends Activity {
 	private static final String LOG_TAG = "gisgraphoid-demo";
 
 	protected static List<String> SORTED_COUNTRY_LIST = CountriesStaticData.sortedCountriesName;
@@ -72,11 +72,11 @@ public class GisgraphoidDemoActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.geocoding);
 
 		// error dialogs
-		emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.empty_input)).create();
-		noResultDialog = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
+		emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.empty_input)).create();
+		noResultDialog = new AlertDialog.Builder(GisgraphoidGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
 
 		// input
 		addressInput = (EditText) findViewById(R.id.simpleGM_adress);
@@ -166,7 +166,7 @@ public class GisgraphoidDemoActivity extends Activity {
 
 				} catch (Exception e) {
 					Log.e(LOG_TAG, "Error during geocoding of " + addressInput + " : " + e.getMessage(), e);
-					Dialog locationError = new AlertDialog.Builder(GisgraphoidDemoActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
+					Dialog locationError = new AlertDialog.Builder(GisgraphoidGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
 					locationError.show();
 				}
 			}
@@ -239,12 +239,12 @@ public class GisgraphoidDemoActivity extends Activity {
 		public AddressResultAdapter(List<Address> addresses) {
 			super();
 			setaddress(addresses);
-			mInflater = (LayoutInflater) GisgraphoidDemoActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			mInflater = (LayoutInflater) GisgraphoidGeocodingActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
 		public AddressResultAdapter() {
 			super();
-			mInflater = (LayoutInflater) GisgraphoidDemoActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			mInflater = (LayoutInflater) GisgraphoidGeocodingActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
 		public void setaddress(List<Address> addresses) {

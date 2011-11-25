@@ -16,8 +16,16 @@ public final class R {
     public static final class id {
         public static final int imageView1=0x7f050002;
         public static final int linearLayout1=0x7f050001;
+        public static final int linearLayout_reverse1=0x7f05000a;
         public static final int osm_map=0x7f050009;
         public static final int results=0x7f050008;
+        public static final int reverse_btn=0x7f050010;
+        public static final int reverse_latitude=0x7f05000e;
+        public static final int reverse_logo=0x7f05000b;
+        public static final int reverse_longitude=0x7f05000f;
+        public static final int reverse_results=0x7f050011;
+        public static final int reverse_tips=0x7f05000d;
+        public static final int reverse_title=0x7f05000c;
         public static final int simpleGM_adress=0x7f050006;
         public static final int simpleGM_btn_search=0x7f050007;
         public static final int simpleGM_layout=0x7f050000;
@@ -26,24 +34,29 @@ public final class R {
         public static final int textView1=0x7f050003;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int geocoding=0x7f030000;
         public static final int map=0x7f030001;
+        public static final int reversegeocoding=0x7f030002;
     }
     public static final class string {
-        public static final int address=0x7f040003;
         public static final int app_name=0x7f040000;
-        public static final int choosecountry=0x7f040004;
-        public static final int dialog_default_title=0x7f04000c;
-        public static final int empty_input=0x7f04000b;
-        public static final int error=0x7f04000e;
-        public static final int geocoding_in_progress=0x7f04000d;
-        public static final int go=0x7f040002;
-        public static final int input=0x7f040005;
-        public static final int latitude=0x7f040007;
-        public static final int longitude=0x7f040008;
-        public static final int name=0x7f040009;
-        public static final int no_result=0x7f04000a;
-        public static final int ok=0x7f040006;
+        public static final int choosecountry=0x7f040006;
+        public static final int dialog_default_title=0x7f040010;
+        public static final int empty_input=0x7f04000d;
+        public static final int error=0x7f040012;
+        public static final int geocode_label=0x7f040002;
+        public static final int geocoding_in_progress=0x7f040011;
+        public static final int geocoding_tips=0x7f040004;
+        public static final int input=0x7f040007;
+        public static final int latitude=0x7f040009;
+        public static final int longitude=0x7f04000a;
+        public static final int name=0x7f04000b;
+        public static final int no_result=0x7f04000c;
+        public static final int ok=0x7f040008;
+        public static final int reverse_geocode_label=0x7f040003;
+        public static final int reverse_tips=0x7f040005;
         public static final int title=0x7f040001;
+        public static final int wrong_lat=0x7f04000e;
+        public static final int wrong_long=0x7f04000f;
     }
 }
