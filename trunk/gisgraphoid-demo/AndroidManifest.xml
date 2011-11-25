@@ -14,7 +14,7 @@
          >
         <activity
             android:label="@string/app_name"
-            android:name=".GisgraphoidReverseGeocodingActivity" >
+            android:name=".GisgraphoidMain" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +22,8 @@
             </intent-filter>
         </activity>
          <activity android:name=".MapActivity" />
+         <activity android:name=".GisgraphoidGeocodingActivity" />
+          <activity android:name=".GisgraphoidReverseGeocodingActivity" />
     </application>
 
 </manifest>
