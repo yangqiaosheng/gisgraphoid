@@ -1,5 +1,9 @@
 package com.gisgraphy.gisgraphoid;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
+
 import com.gisgraphy.domain.valueobject.SRID;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -51,6 +55,26 @@ public class JTSHelper {
 	return true;
     }
 
+    
+    /**
+     * parse a string and return the corresponding double value, it accepts
+     * comma or point as decimal separator
+     * 
+     * @param number
+     *                the number with a point or a comma as decimal separator
+     * @return the float value corresponding to the parsed string
+     * @throws ParseException
+     *                 in case of errors
+     */
+    public static Float parseInternationalDouble(String number)
+	    throws ParseException {
+	NumberFormat nffrench = NumberFormat.getInstance(Locale.FRENCH);
+	NumberFormat nfus = NumberFormat.getInstance(Locale.US);
+
+	Number numberToReturn = number.indexOf(',') != -1 ? nffrench
+		.parse(number) : nfus.parse(number);
+	return numberToReturn.floatValue();
+    }
 
 
 }
