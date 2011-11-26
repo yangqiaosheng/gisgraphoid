@@ -92,9 +92,11 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 		// input
 		latitude = (EditText) findViewById(R.id.reverse_latitude);
 		latitude.setMaxLines(1);
+		latitude.setEllipsize(TextUtils.TruncateAt.END);
 		latitude.requestFocus();
 
 		longitude = (EditText) findViewById(R.id.reverse_longitude);
+		longitude.setEllipsize(TextUtils.TruncateAt.END);
 		longitude.setMaxLines(1);
 
 		useMyPosition = (CheckBox) findViewById(R.id.reverse_geocoding_use_my_position);
@@ -314,10 +316,16 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	}
 
 	public class GisgraphoidLocationListener implements LocationListener {
+		private static final int MAX_COORDINATE_SIZE = 9;
+
 		public void onLocationChanged(Location loc) {
 			if (useMyPosition.isChecked()) {
-				latitude.setText(loc.getLatitude() + "");
-				longitude.setText(loc.getLongitude() + "");
+				String currentLatitude = loc.getLatitude()+"";
+				int maxCurrentLatSize=currentLatitude.length()>MAX_COORDINATE_SIZE?MAX_COORDINATE_SIZE:currentLatitude.length();
+				latitude.setText((currentLatitude + "").substring(0,maxCurrentLatSize));
+				String currentLongitude = loc.getLongitude()+"";
+				int maxCurrentLongSize=currentLongitude.length()>MAX_COORDINATE_SIZE?MAX_COORDINATE_SIZE:currentLatitude.length();
+				longitude.setText(currentLongitude.substring(0,maxCurrentLongSize));
 			}
 
 		}
