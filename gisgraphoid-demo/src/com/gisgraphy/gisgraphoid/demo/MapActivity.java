@@ -24,7 +24,7 @@ public class MapActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.map);
+		setContentView(R.layout.gisgraphoidmap);
 		
 		Intent intent = getIntent();
 		lat = intent.getDoubleExtra(ExtraInfos.LATITUDE,0);

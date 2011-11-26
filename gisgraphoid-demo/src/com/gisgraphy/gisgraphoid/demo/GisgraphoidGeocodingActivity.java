@@ -74,14 +74,14 @@ public class GisgraphoidGeocodingActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.geocoding);
+		setContentView(R.layout.gisgraphoidreversegeocoding);
 
 		// error dialogs
 		emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.empty_input)).create();
 		noResultDialog = new AlertDialog.Builder(GisgraphoidGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.no_result)).create();
 
 		// input
-		addressInput = (EditText) findViewById(R.id.simpleGM_adress);
+		addressInput = (EditText) findViewById(R.id.gisgraphoid_geocoding_address_input);
 		addressInput.setMaxLines(1);
 		addressInput.requestFocus();
 
@@ -97,7 +97,7 @@ public class GisgraphoidGeocodingActivity extends Activity {
 		});
 
 		// results display
-		mList = (ListView) findViewById(R.id.results);
+		mList = (ListView) findViewById(R.id.gisgraphoid_geocoding_results);
 		addressAdapter = new AddressResultAdapter();
 		mList.setAdapter(addressAdapter);
 		mList.setOnItemClickListener(addressAdapter);
@@ -106,7 +106,7 @@ public class GisgraphoidGeocodingActivity extends Activity {
 		progressDialog = new ProgressDialog(this);
 
 		// choose locale
-		spinner = (Spinner) findViewById(R.id.spinnerlocale);
+		spinner = (Spinner) findViewById(R.id.gisgraphoid_spinnerlocale);
 		Collections.sort(SORTED_COUNTRY_LIST);
 		ArrayAdapter<String> countryCodeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, SORTED_COUNTRY_ARRAY);
 		// countryCodeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

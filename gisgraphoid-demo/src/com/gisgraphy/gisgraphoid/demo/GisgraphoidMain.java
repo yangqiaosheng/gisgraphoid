@@ -35,12 +35,13 @@ public class GisgraphoidMain extends TabActivity {
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
-	   /* intent = new Intent().setClass(this, SongsActivity.class);
-	    spec = tabHost.newTabSpec("songs").setIndicator("Songs",
-	                      res.getDrawable(R.drawable.ic_tab_songs))
+	    tabName = getResources().getString(R.string.about);
+	    intent = new Intent().setClass(this, GisgraphoidAbout.class);
+	    spec = tabHost.newTabSpec(tabName).setIndicator(tabName,
+	                      res.getDrawable(R.drawable.ic_launcher))
 	                  .setContent(intent);
-	    tabHost.addTab(spec);*/
+	    tabHost.addTab(spec);
 
-	    tabHost.setCurrentTab(2);
+	   // tabHost.setCurrentTab(2);
 	}
 }
