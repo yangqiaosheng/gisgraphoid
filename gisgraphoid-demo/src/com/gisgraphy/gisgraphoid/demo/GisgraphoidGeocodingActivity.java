@@ -74,7 +74,7 @@ public class GisgraphoidGeocodingActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.gisgraphoidreversegeocoding);
+		setContentView(R.layout.gisgraphoidgeocoding);
 
 		// error dialogs
 		emptyAddressInputDialog = new AlertDialog.Builder(GisgraphoidGeocodingActivity.this).setIcon(0).setTitle(getResources().getString(R.string.dialog_default_title)).setPositiveButton(R.string.ok, null).setMessage(getResources().getString(R.string.empty_input)).create();
@@ -83,6 +83,7 @@ public class GisgraphoidGeocodingActivity extends Activity {
 		// input
 		addressInput = (EditText) findViewById(R.id.gisgraphoid_geocoding_address_input);
 		addressInput.setMaxLines(1);
+		addressInput.setEllipsize(TextUtils.TruncateAt.END);
 		addressInput.requestFocus();
 
 		addressInput.setOnKeyListener(new OnKeyListener() {
