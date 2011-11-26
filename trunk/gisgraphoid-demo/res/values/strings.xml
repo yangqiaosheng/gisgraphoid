@@ -7,10 +7,19 @@
     <string name="geocoding">Geocoding</string>
     <string name="reverse_geocoding">Reverse Geocoding</string>
     <string name="about">About</string>
-     <string name="about_text">....</string>
-    
+     <string name="about_gisgraphy_text">Gisgraphy is a free, open source framework that offers the possibility to do geolocalisation and geocoding via Java APIs or REST webservices.
+  Because geocoding is nothing without data, it provides an easy to use importer that will automagically download and import the necessary 
+  (free) data to your local database. You can also add your own data with the Web interface or the importer connectors provided. Gisgraphy is production ready, and has been designed to be scalable(load balanced), performant and used in other languages than just java : results can be output in XML, JSON, PHP, Python, Ruby, YAML, GeoRSS, and Atom. OpenGTS, One of the most popular GPS tracking System also includes a Gisgraphy client.</string>
+<string name="about_gisgraphoid_text">
+Gisgraphoid is a part of the free opensource gisgraphy geocoder 
+(as the Gisgraphy address parser, and the Gisgraphy geocoder), it give you the ability to do geocoding on your Android mobile or tab with
+ the same Geocoder API as Google but with Gisgraphy. Free, No Google API needed by the phone, no API key, no limit.
+  You can display the result on Openstreetmap or Google maps (Google API key required). Gisgraphy geocoder can be used when no geocoder is present..
+  </string>
+  <string name="use_my_position">Use My GPS coordinate</string>
+        
     <string name="geocode_label">Geocode</string>
-     <string name="reverse_geocode_label">Find</string>
+     <string name="reverse_geocode_label">Reverse geocode</string>
     <string name="geocoding_tips">Select a country and enter an address :</string>
     <string name="reverse_tips">Enter a latitude and a longitude :</string>
     <string name="choosecountry">Select a country</string>
