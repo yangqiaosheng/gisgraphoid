@@ -22,20 +22,20 @@ public class GisgraphoidMain extends TabActivity {
 	    intent = new Intent().setClass(this, GisgraphoidGeocodingActivity.class);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    String tabName = getResources().getString(R.string.geocoding);
+	    String tabName = getResources().getString(R.string.geocoding_menu_title);
 	    spec = tabHost.newTabSpec(tabName).setIndicator(tabName,
 	                      res.getDrawable(R.drawable.ic_launcher))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
-	    tabName = getResources().getString(R.string.reverse_geocoding);
+	    tabName = getResources().getString(R.string.reverse_geocoding_menu_title);
 	    intent = new Intent().setClass(this, GisgraphoidReverseGeocodingActivity.class);
 	    spec = tabHost.newTabSpec(tabName).setIndicator(tabName,
 	                      res.getDrawable(R.drawable.ic_launcher))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
-	    tabName = getResources().getString(R.string.about);
+	    tabName = getResources().getString(R.string.about_menu_title);
 	    intent = new Intent().setClass(this, GisgraphoidAbout.class);
 	    spec = tabHost.newTabSpec(tabName).setIndicator(tabName,
 	                      res.getDrawable(R.drawable.ic_launcher))

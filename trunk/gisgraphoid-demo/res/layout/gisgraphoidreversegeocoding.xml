@@ -62,11 +62,27 @@
         android:textSize="18sp" />
 </LinearLayout>
 
-<CheckBox
+
+
+
+
+<LinearLayout
+    android:id="@+id/linearLayout2"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+    <ToggleButton
     android:id="@+id/reverse_geocoding_use_my_position"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/use_my_position" />
+
+    <TextView
+        android:id="@+id/reverse_geocoding_use_my_position_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/use_my_position" />
+
+</LinearLayout>
 
 <Button
     android:id="@+id/reverse_btn"

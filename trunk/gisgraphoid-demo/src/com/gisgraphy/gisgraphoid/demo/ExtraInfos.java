@@ -11,5 +11,6 @@ public class ExtraInfos {
     public final static String FEATURE_NAME = "featureName";
     public final static String LATITUDE = "latitude";
     public final static String LONGITUDE = "longitude";
+    public final static String ADDRESS = "address";
 
 }
