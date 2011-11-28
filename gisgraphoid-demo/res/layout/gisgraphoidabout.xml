@@ -26,18 +26,16 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/simpleGM_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         android:text="@string/about_gisgraphoid_text"
-         android:paddingBottom="20px"/>
-    
-     <TextView
-        android:id="@+id/simpleGM_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-         android:text="@string/about_gisgraphy_text"/>
+         <ScrollView
+             android:id="@+id/Scrollabout"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent" >
 
+    		<TextView
+        		android:id="@+id/gisgraphoid_about_content"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:paddingBottom="20px"/>
+		</ScrollView>
 
 </LinearLayout>

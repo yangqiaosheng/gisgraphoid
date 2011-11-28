@@ -26,10 +26,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.TwoLineListItem;
 
 import com.gisgraphy.domain.valueobject.CountriesStaticData;
@@ -65,7 +65,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	protected Button btnSearch;
 	protected EditText latitude;
 	protected EditText longitude;
-	protected CheckBox useMyPosition;
+	protected ToggleButton useMyPosition;
 	protected ListView mList;
 	protected ProgressDialog progressDialog;
 
@@ -99,7 +99,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 		longitude.setEllipsize(TextUtils.TruncateAt.END);
 		longitude.setMaxLines(1);
 
-		useMyPosition = (CheckBox) findViewById(R.id.reverse_geocoding_use_my_position);
+		useMyPosition = (ToggleButton) findViewById(R.id.reverse_geocoding_use_my_position);
 
 		LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new GisgraphoidLocationListener();
@@ -233,17 +233,18 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	}
 
 	/**
-	 * start a new Activity to display an address on a map
+	 * start a new Activity to display an address on a map, actually implements Openstreetmap with osmdroid
 	 * 
 	 * @param address
 	 *            the address to display on a map
 	 */
 	protected void viewOnMap(Address address) {
 		Intent next = new Intent();
-		next.setClass(this, MapActivity.class);
+		next.setClass(this, GisgraphoidMapActivity.class);
 		next.putExtra(ExtraInfos.FEATURE_NAME, address.getFeatureName());
 		next.putExtra(ExtraInfos.LATITUDE, address.getLatitude());
 		next.putExtra(ExtraInfos.LONGITUDE, address.getLongitude());
+		next.putExtra(ExtraInfos.ADDRESS,address);
 		startActivity(next);
 
 	}

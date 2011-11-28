@@ -220,10 +220,11 @@ public class GisgraphoidGeocodingActivity extends Activity {
 	 */
 	protected void viewOnMap(Address address) {
 		Intent next = new Intent();
-		next.setClass(this, MapActivity.class);
+		next.setClass(this, GisgraphoidMapActivity.class);
 		next.putExtra(ExtraInfos.FEATURE_NAME, address.getFeatureName());
 		next.putExtra(ExtraInfos.LATITUDE, address.getLatitude());
 		next.putExtra(ExtraInfos.LONGITUDE, address.getLongitude());
+		next.putExtra(ExtraInfos.ADDRESS,address);
 		startActivity(next);
 
 	}
