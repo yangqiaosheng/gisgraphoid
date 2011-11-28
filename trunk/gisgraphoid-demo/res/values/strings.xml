@@ -42,7 +42,8 @@
     <string name="wrong_long">Longitude should be a number between -180 and +180</string>
     <string name="dialog_default_title">Oops </string>
     <string name="geocoding_in_progress">Geocoding in progress</string>
-    <string name="error">An error ha occurred</string>
+    <string name="error">An error has occurred</string>
+    <string name="marker_tips">Long click on marker to view infos</string>
           
 
 </resources>

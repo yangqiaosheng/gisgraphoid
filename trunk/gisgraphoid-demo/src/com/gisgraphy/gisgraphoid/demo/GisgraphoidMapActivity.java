@@ -77,11 +77,18 @@ public class GisgraphoidMapActivity extends Activity {
 		    public boolean onItemLongPress(int index, OverlayItem item) {
 			AddressOverlayItem addressOverlayItem = (AddressOverlayItem)item;
 			Address addressFromOverlay = addressOverlayItem.getAddress();
+			String locality = addressFromOverlay.getLocality();
+			String fullname = addressFromOverlay.getFeatureName();
+			if (locality!=null){
+			    fullname = fullname+"("+locality+")";
+			}
 			Toast.makeText(
 				GisgraphoidMapActivity.this,
-				addressFromOverlay.getFeatureName() + "\n" +
-				"lat : " + addressFromOverlay.getLatitude() + " - long : " + addressFromOverlay.getLongitude(),
-				Toast.LENGTH_SHORT).show();
+				fullname + "\n" +
+				//addressFromOverlay.getLocality()!=null?"("+addressFromOverlay.getLocality()+")":""+
+				"lat : " + addressFromOverlay.getLatitude() + "\n" +
+				"long : " + addressFromOverlay.getLongitude(),
+				Toast.LENGTH_LONG).show();
 			return false;
 		    }
 
