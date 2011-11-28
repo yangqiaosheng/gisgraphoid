@@ -80,7 +80,7 @@ public class GisgraphoidMapActivity extends Activity {
 			String locality = addressFromOverlay.getLocality();
 			String fullname = addressFromOverlay.getFeatureName();
 			if (locality!=null){
-			    fullname = fullname+"("+locality+")";
+			    fullname = fullname+" ("+locality+")";
 			}
 			Toast.makeText(
 				GisgraphoidMapActivity.this,
