@@ -12,7 +12,6 @@ import android.location.Address;
  * a simple mock that returns some addresses
  * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>
  * 
- * usage : TODO
  */
 public class GisgraphyGeocoderMock extends GisgraphyGeocoder {
 
@@ -69,11 +68,13 @@ public class GisgraphyGeocoderMock extends GisgraphyGeocoder {
 	Address address1 = new Address(Locale.getDefault());
 	address1.setLatitude(48.85340881347656D);
 	address1.setLongitude(2.34879994392395D);
-	address1.setFeatureName("Paris");
+	address1.setFeatureName("Notre dame");
+	address1.setLocality("Paris");
 	Address address2 = new Address(Locale.getDefault());
+	address2.setFeatureName("Broadway");
 	address2.setLatitude(40.714271545410156D);
 	address2.setLongitude(-74.00596618652344D);
-	address2.setFeatureName("New york");
+	address2.setLocality("New york");
 	androidAddress.add(address1);
 	androidAddress.add(address2);
 	return androidAddress;
