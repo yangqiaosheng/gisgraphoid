@@ -35,6 +35,7 @@ import android.widget.TwoLineListItem;
 import com.gisgraphy.domain.valueobject.CountriesStaticData;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
+import com.gisgraphy.gisgraphoid.sample.R;
 
 /**
  * Sample code to use Gisgraphoid Geocoder

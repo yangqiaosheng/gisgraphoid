@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
+import com.gisgraphy.gisgraphoid.sample.R;
 
 public class GisgraphoidMain extends TabActivity {
 
