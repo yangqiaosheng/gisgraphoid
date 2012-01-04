@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gisgraphy.gisgraphoid.demo"
+    package="com.gisgraphy.gisgraphoid.sample"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -15,17 +15,17 @@
          >
         <activity
             android:label="@string/app_name"
-            android:name=".GisgraphoidMain" >
+            android:name="com.gisgraphy.gisgraphoid.demo.GisgraphoidMain" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity android:name=".GisgraphoidGeocodingActivity" />
-         <activity android:name=".GisgraphoidReverseGeocodingActivity" />
-         <activity android:name=".GisgraphoidAbout" />
-         <activity android:name=".GisgraphoidMapActivity" />
+         <activity android:name="com.gisgraphy.gisgraphoid.demo.GisgraphoidGeocodingActivity" />
+         <activity android:name="com.gisgraphy.gisgraphoid.demo.GisgraphoidReverseGeocodingActivity" />
+         <activity android:name="com.gisgraphy.gisgraphoid.demo.GisgraphoidAbout" />
+         <activity android:name="com.gisgraphy.gisgraphoid.demo.GisgraphoidMapActivity" />
     </application>
 
 </manifest>
