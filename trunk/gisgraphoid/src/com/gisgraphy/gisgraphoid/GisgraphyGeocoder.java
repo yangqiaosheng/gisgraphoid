@@ -378,7 +378,7 @@ public class GisgraphyGeocoder {
 	    params.put(ADDRESS_PARAMETER_NAME, locationName);
 	    params.put(FORMAT_PARAMETER_NAME, DEFAULT_FORMAT);
 	    if (apiKey != null) {
-		params.put(APIKEY_PARAMETER_NAME, apiKey + "");
+	    	params.put(APIKEY_PARAMETER_NAME, apiKey + "");
 	    }
 
 	    AddressResultsDto response = webService.get(GEOCODING_URI, AddressResultsDto.class, params);
