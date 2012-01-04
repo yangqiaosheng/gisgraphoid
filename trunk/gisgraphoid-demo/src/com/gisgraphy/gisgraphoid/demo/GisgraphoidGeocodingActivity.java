@@ -211,7 +211,7 @@ public class GisgraphoidGeocodingActivity extends Activity {
 	 */
 	protected GisgraphyGeocoder createGeocoder(Locale locale) {
 		// return new GisgraphyGeocoder(this,locale);
-		return new GisgraphyGeocoderMock(this, locale);
+		return new GisgraphyGeocoder(this, locale);
 	}
 
 	/**
