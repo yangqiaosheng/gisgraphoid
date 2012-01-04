@@ -65,10 +65,11 @@ public class RestClient {
 				i++;
 			}
 		}
+		String urlWithQueryString = sb.toString();
 		InputStream in;
-		Log.d("RestClient: ", "getUrl = " + getUrl);
+		Log.d("RestClient: ", "getUrl = " + urlWithQueryString);
 		try {
-			in = getRemoteContent(getUrl);
+			in = getRemoteContent(urlWithQueryString);
 			T returnObjects = new Gson().fromJson(new BufferedReader(new InputStreamReader(in)), classToBeBound);
 			// Log.d("result", String.valueOf(returnObjects));
 			return returnObjects;
