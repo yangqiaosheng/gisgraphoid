@@ -125,7 +125,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	}
 
 	protected void doReverseGeocoding() {
-		progressDialog.setMessage(getResources().getString(R.string.geocoding_in_progress));
+		progressDialog.setMessage(getResources().getString(R.string.reverse_geocoding_in_progress));
 
 		new Thread(new Runnable() {
 			public void run() {
