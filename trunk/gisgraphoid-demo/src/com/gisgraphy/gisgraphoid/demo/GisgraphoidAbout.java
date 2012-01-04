@@ -3,7 +3,8 @@ package com.gisgraphy.gisgraphoid.demo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
-import com.gisgraphy.gisgraphoid.sample.R;
+
+import com.gisgraphy.gisgraphoid.example.R;
 
 public class GisgraphoidAbout extends Activity {
 

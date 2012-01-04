@@ -21,8 +21,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.gisgraphy.gisgraphoid.example.R;
 import com.gisgraphy.gisgraphoid.map.AddressOverlayItem;
-import com.gisgraphy.gisgraphoid.sample.R;
 
 /**
  * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>

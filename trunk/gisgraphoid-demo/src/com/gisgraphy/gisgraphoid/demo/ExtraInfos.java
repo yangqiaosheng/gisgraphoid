@@ -1,6 +1,5 @@
 package com.gisgraphy.gisgraphoid.demo;
 
-import com.gisgraphy.gisgraphoid.sample.R;
 
 /**
  * @author <a href="mailto:david.masclet@gisgraphy.com">David Masclet</a>

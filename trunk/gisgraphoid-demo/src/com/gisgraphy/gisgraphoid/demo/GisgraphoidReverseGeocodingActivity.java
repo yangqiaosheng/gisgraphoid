@@ -36,7 +36,7 @@ import com.gisgraphy.domain.valueobject.CountriesStaticData;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoder;
 import com.gisgraphy.gisgraphoid.GisgraphyGeocoderMock;
 import com.gisgraphy.gisgraphoid.JTSHelper;
-import com.gisgraphy.gisgraphoid.sample.R;
+import com.gisgraphy.gisgraphoid.example.R;
 
 /**
  * Sample code to use Gisgraphoid Geocoder
@@ -229,8 +229,8 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 	 * @return a new geocoder instance
 	 */
 	protected GisgraphyGeocoder createGeocoder(Locale locale) {
-		// return new GisgraphyGeocoder(this,locale);
-		return new GisgraphyGeocoderMock(this, locale);
+		// return new GisgraphyGeocoderMock(this,locale);
+		return new GisgraphyGeocoder(this, locale);
 	}
 
 	/**
