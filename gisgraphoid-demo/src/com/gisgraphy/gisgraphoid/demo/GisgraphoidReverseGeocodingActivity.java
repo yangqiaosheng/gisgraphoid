@@ -141,6 +141,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 					}
 					// check that latitude is a number and in the correct range
 					try {
+						latitude_input = latitude_input.replace(",", ".");
 						latitudeAsDouble = new Double(latitude_input);
 						JTSHelper.checkLatitude(latitudeAsDouble);
 					} catch (Exception e) {
@@ -149,6 +150,7 @@ public class GisgraphoidReverseGeocodingActivity extends Activity {
 					}
 					// check that longitude is a number and in the correct range
 					try {
+						longitude_input = longitude_input.replace(",",".");
 						longitudeAsDouble = new Double(longitude_input);
 						JTSHelper.checkLongitude(longitudeAsDouble);
 					} catch (Exception e) {
