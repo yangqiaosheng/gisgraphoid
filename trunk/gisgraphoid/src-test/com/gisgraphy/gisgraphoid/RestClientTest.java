@@ -38,11 +38,11 @@ public class RestClientTest {
 		Assert.assertEquals(10, o.getResult().size());
 	}
 	
-	@Test(expected=RuntimeException.class)
+	@Test
 	public void getBadUrl(){
 		String webServiceUrl = "http://gisgraphy";
 		RestClient client = new RestClient(webServiceUrl);
-		client.get("champs_elysees_paris", AddressResultsDto.class, new HashMap<String, String>());
+		Assert.assertNull(client.get("champs_elysees_paris", AddressResultsDto.class, new HashMap<String, String>()));
 	}
 	
 
