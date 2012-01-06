@@ -74,10 +74,11 @@ public class RestClient {
 			// Log.d("result", String.valueOf(returnObjects));
 			return returnObjects;
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			String errorMessage = "Error during parsing of Gisgraphy response (has Gisgraphy API changed or feed is not json ?) : " + e;
 			Log.d("RestClient", errorMessage, e);
-			throw new RuntimeException(errorMessage,e);
+			//throw new RuntimeException(errorMessage,e);
+			return null;
 		}
 
 	}
