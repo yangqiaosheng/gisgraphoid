@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>com.gisgraphy</groupId>
 			<artifactId>gisgraphy-commons</artifactId>
-			<version>1.0-android</version>
+			<version>1.0</version>
 			<type>jar</type>
 			<exclusions>
 			<exclusion>
