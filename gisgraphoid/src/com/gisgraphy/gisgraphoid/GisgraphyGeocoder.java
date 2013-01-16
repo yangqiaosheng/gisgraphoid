@@ -215,7 +215,7 @@ public class GisgraphyGeocoder {
      */
     public List<Address> getFromLocation(double latitude, double longitude, int maxResults) throws IOException {
 	log_d("getFromLocation: lat=" + latitude + ",longitude=" + longitude + ",maxResults=" + maxResults);
-	if (!checkLatitude(latitude) || !checkLatitude(longitude)) {
+	if (!checkLatitude(latitude) || !checkLongitude(longitude)) {
 	    throw new IllegalArgumentException("lattitude should be > -90 and < 90 and longitude should be >-180 and < 180");
 	}
 	if (maxResults < 0) {
